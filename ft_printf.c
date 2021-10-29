@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/28 23:59:15 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/10/29 10:38:09 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int ft_printf_helper(const char *format, va_list ap)
 		{
 			ft_putchar('%');
 			i += 2;
-		}	
+		}
 		else
 		{
 			ft_putchar(format[i]);

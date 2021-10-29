@@ -8,7 +8,7 @@ OBJS := $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar rc $@ $^
+	ar rcs $@ $^
 
 %.o: %.c $(HEADERFILE)
 	$(CC) $(CFLAGS) $< -o $@
