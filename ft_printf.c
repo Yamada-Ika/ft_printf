@@ -6,191 +6,176 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/29 10:38:09 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/11/01 12:28:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_strlen(const char *s)
+static void	ft_print_normal_str(const char *format, size_t head, size_t tail, int *write_len)
 {
-	size_t	count;
+	char	*normal_str;
 
-	count = 0;
-	while (s[count] != '\0')
-		count++;
-	return (count);
-}
-
-void	ft_putstr_fd(char *c, int fd)
-{
-	size_t	c_len;
-	size_t	prev_write_len;
-	char	*tmp_c;
-
-	if (c == NULL)
+	normal_str = ft_substr(format, head, tail - head);
+	if (normal_str == NULL)
+	{
+		*write_len = -1;
 		return ;
-	tmp_c = c;
-	c_len = ft_strlen(tmp_c);
-	prev_write_len = c_len % INT_MAX;
-	write(fd, tmp_c, prev_write_len);
-	tmp_c += prev_write_len;
-	c_len /= INT_MAX;
-	while (c_len-- > 0)
-	{
-		write(fd, tmp_c, INT_MAX);
-		tmp_c += INT_MAX;
 	}
+	ft_putstr(normal_str);
+	*write_len += ft_strlen_s(normal_str);
+	ft_free_s((void **)&normal_str);
 }
 
-void	ft_putstr(char *c)
+static void ft_print_c(va_list *ap, int *write_len)
 {
-	ft_putstr_fd(c, STDOUT_FILENO);
+	ft_putchar(va_arg(*ap, int));
+	*write_len += 1;
 }
 
-void	ft_putchar_fd(char c, int fd)
+static void ft_print_s(va_list *ap, int *write_len)
 {
-	unsigned char	head;
-	unsigned char	tail;
+	char	*s;
 
-	if ((unsigned char)c <= 127)
-		write(fd, &c, sizeof(c));
-	else
+	s = va_arg(*ap, char *);
+	if (s == NULL)
 	{
-		head = 0b11000000 | (((unsigned char)c & 0b11000000) >> 6);
-		tail = 0b10000000 | ((unsigned char)c & 0b00111111);
-		write(fd, &head, sizeof(char));
-		write(fd, &tail, sizeof(char));
+		ft_putstr("(null)");
+		*write_len += (int)ft_strlen_s("(null)");
+		return ;
 	}
+	ft_putstr(s);
+	*write_len += (int)ft_strlen_s(s);
 }
 
-void	ft_putchar(char c)
+static void ft_print_di(va_list *ap, int *write_len)
 {
-	ft_putchar_fd(c, STDOUT_FILENO);
+	char	*num;
+
+	num = ft_itoa(va_arg(*ap, int));
+	ft_putstr(num);
+	*write_len += (int)ft_strlen_s(num);
+	ft_free_s((void **)&num);
 }
 
-int	ft_strncmp(const char*s1, const char *s2, size_t n)
+static void ft_print_u(va_list *ap, int *write_len)
 {
-	size_t				i;
-	const unsigned char	*cu_s1;
-	const unsigned char	*cu_s2;
+	char	*num;
 
-	cu_s1 = (const unsigned char *)s1;
-	cu_s2 = (const unsigned char *)s2;
-	i = 0;
-	if (n == 0)
-		return (0);
-	i = 0;
-	while (cu_s1[i] == cu_s2[i] && i < n - 1
-		&& !(cu_s1[i] == '\0' && cu_s2[i] == '\0'))
-		i++;
-	return (cu_s1[i] - cu_s2[i]);
+	num = ft_uitoa(va_arg(*ap, unsigned int));
+	ft_putstr(num);
+	*write_len += (int)ft_strlen_s(num);
+	ft_free_s((void **)&num);
 }
 
-
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+static void ft_print_percent(int *write_len)
 {
-	size_t	needle_len;
+	ft_putchar('%');
+	*write_len += 1;
+}
 
-	needle_len = ft_strlen(needle);
-	if (needle_len == 0)
-		return ((char *)haystack);
-	if (len == 0)
-		return (NULL);
-	while (*haystack != '\0' && len >= needle_len)
+static void ft_print_lower_x(va_list *ap, int *write_len)
+{
+	char	*lower_hex;
+
+	lower_hex = ft_itoa_base(va_arg(*ap, int), "0123456789abcdef");
+	if (lower_hex == NULL)
 	{
-		if (ft_strncmp(haystack, needle, needle_len) == 0)
-			return ((char *)haystack);
-		haystack++;
-		len--;
+		*write_len = -1;
+		return ;
 	}
-	return (NULL);
+	ft_putstr(lower_hex);
+	*write_len += ft_strlen_s(lower_hex);
+	ft_free_s((void **)&lower_hex);
 }
 
-char	*ft_strstr(const char *haystack, const char *needle)
+static void ft_print_upper_x(va_list *ap, int *write_len)
 {
-	return (ft_strnstr(haystack, needle, ft_strlen(haystack)));
-}
+	char	*upper_hex;
 
-void	ft_putnbr_fd(int n, int fd)
-{
-	int	is_INT_MIN;
-
-	is_INT_MIN = 0;
-	if (n < 0)
+	upper_hex = ft_itoa_base(va_arg(*ap, int), "0123456789ABCDEF");
+	if (upper_hex == NULL)
 	{
-		ft_putchar_fd('-', fd);
-		if (n == INT_MIN)
-		{
-			is_INT_MIN = 1;
-			n++;
-		}
-		n *= -1;
+		*write_len = -1;
+		return ;
 	}
-	if (0 <= n && n <= 9)
-		ft_putchar_fd(n + '0', fd);
-	else
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putchar_fd(n % 10 + is_INT_MIN + '0', fd);
-	}
+	ft_putstr(upper_hex);
+	*write_len += ft_strlen_s(upper_hex);
+	ft_free_s((void **)&upper_hex);
 }
 
-void	ft_putuinbr(unsigned int n)
+static void ft_print_p(va_list *ap, int *write_len)
 {
-	if (n <= 9)
-		ft_putchar(n + '0');
-	else
+	char	*ll_hex;
+
+	ll_hex = ft_lltoa_base((long long)va_arg(*ap, void *), "0123456789abcdef");
+	if (ll_hex == NULL)
 	{
-		ft_putuinbr(n / 10);
-		ft_putchar(n % 10 + '0');
+		*write_len = -1;
+		return ;
 	}
+	ft_putstr("0x");
+	ft_putstr(ll_hex);
+	*write_len += ft_strlen_s(ll_hex) + 2;
+	ft_free_s((void **)&ll_hex);
 }
 
-void	ft_putnbr(int n)
-{
-	ft_putnbr_fd(n, STDOUT_FILENO);
-}
-
-int ft_printf_helper(const char *format, va_list ap)
+static void	ft_print_with_conversion_specifier(const char *format, va_list *ap, size_t tail, int *write_len)
 {
 	size_t	i;
 
-	i = 0;
-	while (format[i] != '\0')
+	i = tail + 1;
+	if (format[i] == 'c')
+		ft_print_c(ap, write_len);
+	else if (format[i] == 's')
+		ft_print_s(ap, write_len);
+	else if (format[i] == 'p')
+		ft_print_p(ap, write_len);
+	else if (format[i] == 'd' || format[i] == 'i')
+		ft_print_di(ap, write_len);
+	else if (format[i] == 'u')
+		ft_print_u(ap, write_len);
+	else if (format[i] == 'x')
+		ft_print_lower_x(ap, write_len);
+	else if (format[i] == 'X')
+		ft_print_upper_x(ap, write_len);
+	else if (format[i] == '%')
+		ft_print_percent(write_len);
+}
+
+static int ft_printf_helper(const char *format, va_list *ap)
+{
+	int		write_len;
+	size_t	tail;
+	size_t	head;
+
+	write_len = 0;
+	tail = 0;
+	head = 0;
+	while (1)
 	{
-		if (ft_strncmp(&format[i], "%c", 2) == 0)
+		if (format[tail] == '%')
 		{
-			ft_putchar(va_arg(ap, int));
-			i += 2;
-		}	
-		else if (ft_strncmp(&format[i], "%s", 2) == 0)
-		{
-			ft_putstr(va_arg(ap, char *));
-			i += 2;
+			ft_print_normal_str(format, head, tail, &write_len);
+			if (write_len < 0)
+				return (-1);
+			ft_print_with_conversion_specifier(format, ap, tail, &write_len);
+			if (write_len < 0)
+				return (-1);
+			tail += 2;
+			head = tail;
 		}
-		else if (ft_strncmp(&format[i], "%d", 2) == 0 || ft_strncmp(&format[i], "%i", 2) == 0)
+		else if (format[tail] == '\0')
 		{
-			ft_putnbr(va_arg(ap, int));
-			i += 2;
-		}
-		else if (ft_strncmp(&format[i], "%u", 2) == 0)
-		{
-			ft_putuinbr(va_arg(ap, unsigned int));
-			i += 2;
-		}
-		if (ft_strncmp(&format[i], "%%", 2) == 0)
-		{
-			ft_putchar('%');
-			i += 2;
+			ft_print_normal_str(format, head, tail, &write_len);
+			if (write_len < 0)
+				return (-1);
+			break ;
 		}
 		else
-		{
-			ft_putchar(format[i]);
-			i++;
-		}
+			tail++;
 	}
-	return (1);
+	return (write_len);
 }
 
 int	ft_printf(const char *format, ...)
@@ -199,26 +184,7 @@ int	ft_printf(const char *format, ...)
 	int		ret;
 
 	va_start(ap, format);
-	ret = ft_printf_helper(format, ap);
+	ret = ft_printf_helper(format, &ap);
 	va_end(ap);
 	return (ret);
 }
-
-// // test
-// int main(void) {
-// 	ft_printf("%c\n", 'a');
-// 	ft_printf("c\n", 'a');
-// 	ft_printf("%s\n", "01234");
-// 	ft_printf("s\n", "01234");
-// 	ft_printf("%d\n", 1);
-// 	ft_printf("%d %d\n", 10, -100);
-// 	ft_printf("%i %i\n", 10, -100);
-// 	ft_printf("%u\n", UINT_MAX);
-// 	ft_printf("%u\n", 4294967296);
-// 	ft_printf("%%\n");
-// 	printf("%%\n");
-
-// 	// segmentation fault case
-// 	// printf("%s\n");
-// 	// ft_printf("%s\n");
-// }
