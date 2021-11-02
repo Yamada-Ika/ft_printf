@@ -6,13 +6,14 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 08:55:56 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/31 00:03:20 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/11/02 10:33:05 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ft_itoa_base_helper(unsigned int u_n, char *base, unsigned int radix, size_t digits)
+static char	*ft_itoa_base_helper(unsigned int u_n, char *base,
+	unsigned int radix, size_t digits)
 {
 	char	*converted_num;
 
@@ -31,7 +32,7 @@ static char	*ft_itoa_base_helper(unsigned int u_n, char *base, unsigned int radi
 	return (converted_num);
 }
 
-char *ft_itoa_base(int n, char *base)
+char	*ft_itoa_base(int n, char *base)
 {
 	unsigned int	radix;
 	unsigned int	u_n;

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/31 00:20:35 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/31 00:34:05 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/11/02 10:33:48 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static size_t	count_digits(long long n)
 
 char	*ft_lltoa(long long n)
 {
-	size_t	digits_count;
-	char	*num;
+	size_t		digits_count;
+	char		*num;
 	long long	tmp_n;
 
 	if (n == 0)

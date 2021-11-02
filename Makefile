@@ -5,7 +5,7 @@ LIBFT_DIR		:= libft
 NAME 			:= libftprintf.a
 PRINTF_HEADER	:= ft_printf.h
 LIBFT_HEADER	:= libft.h
-PRINTF_SRCS		:= ft_printf.c
+PRINTF_SRCS		:= ft_printf.c ft_printf_utils_1.c ft_printf_utils_2.c
 LIBFT_SRCS		:= \
 ft_atoi.c         ft_lltoa_base.c   ft_memcpy.c       ft_split.c        ft_strnstr.c\
 ft_bzero.c        ft_lstadd_back.c  ft_memmove.c      ft_strchr.c       ft_strrchr.c\
