@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_s.c                                        :+:      :+:    :+:   */
+/*   ft_printf_s.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 10:20:21 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/26 10:26:49 by iyamada          ###   ########.fr       */
+/*   Created: 2021/11/14 14:04:55 by iyamada           #+#    #+#             */
+/*   Updated: 2021/11/14 14:05:33 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	ft_free_s(void **ptr)
+void	ft_printf_s(va_list *ap, int *write_len)
 {
-	free(*ptr);
-	*ptr = NULL;
+	char	*s;
+
+	s = va_arg(*ap, char *);
+	if (s == NULL)
+	{
+		ft_putstr("(null)");
+		*write_len += (int)ft_strlen_s("(null)");
+		return ;
+	}
+	ft_putstr(s);
+	*write_len += (int)ft_strlen_s(s);
 }

@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_printf_p.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 23:47:33 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/25 10:55:25 by iyamada          ###   ########.fr       */
+/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
+/*   Updated: 2021/11/14 14:19:46 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+void	ft_printf_p(va_list *ap, int *write_len)
 {
-	size_t			i;
-	unsigned char	*uc_b;
+	char	*ll_hex;
 
-	i = 0;
-	uc_b = (unsigned char *)b;
-	while (i < len)
+	ll_hex = ft_lltoa_base((long long)va_arg(*ap, void *), "0123456789abcdef");
+	if (ll_hex == NULL)
 	{
-		uc_b[i] = (unsigned char)c;
-		i++;
+		*write_len = -1;
+		return ;
 	}
-	return (b);
+	ft_putstr("0x");
+	ft_putstr(ll_hex);
+	*write_len += ft_strlen_s(ll_hex) + 2;
+	ft_free_s((void **)&ll_hex);
 }

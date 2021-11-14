@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_printf_lower_x.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 23:47:43 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/25 17:03:53 by iyamada          ###   ########.fr       */
+/*   Created: 2021/11/14 14:08:19 by iyamada           #+#    #+#             */
+/*   Updated: 2021/11/14 14:08:25 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	ft_putstr_fd(char *c, int fd)
+void	ft_printf_lower_x(va_list *ap, int *write_len)
 {
-	size_t	c_len;
-	size_t	prev_write_len;
-	char	*tmp_c;
+	char	*lower_hex;
 
-	if (c == NULL)
-		return ;
-	tmp_c = c;
-	c_len = ft_strlen(tmp_c);
-	prev_write_len = c_len % INT_MAX;
-	write(fd, tmp_c, prev_write_len);
-	tmp_c += prev_write_len;
-	c_len /= INT_MAX;
-	while (c_len-- > 0)
+	lower_hex = ft_itoa_base(va_arg(*ap, int), "0123456789abcdef");
+	if (lower_hex == NULL)
 	{
-		write(fd, tmp_c, INT_MAX);
-		tmp_c += INT_MAX;
+		*write_len = -1;
+		return ;
 	}
+	ft_putstr(lower_hex);
+	*write_len += ft_strlen_s(lower_hex);
+	ft_free_s((void **)&lower_hex);
 }

@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_printf_c.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 23:47:53 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/25 10:55:59 by iyamada          ###   ########.fr       */
+/*   Created: 2021/11/14 06:26:53 by iyamada           #+#    #+#             */
+/*   Updated: 2021/11/14 14:04:08 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-char	*ft_strchr(const char *s, int c)
+void	ft_printf_c(va_list *ap, int *write_len)
 {
-	size_t	i;
-
-	i = 0;
-	while (1)
-	{
-		if (s[i] == (char)c)
-			return ((char *)s + i);
-		if (s[i] == '\0')
-			return (NULL);
-		i++;
-	}
+	ft_putchar(va_arg(*ap, int));
+	*write_len += 1;
 }

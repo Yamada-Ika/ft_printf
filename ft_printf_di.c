@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_printf_di.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 15:33:49 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/25 10:54:41 by iyamada          ###   ########.fr       */
+/*   Created: 2021/11/14 14:06:58 by iyamada           #+#    #+#             */
+/*   Updated: 2021/11/14 14:07:11 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-t_list	*ft_lstnew(void	*content)
+void	ft_printf_di(va_list *ap, int *write_len)
 {
-	t_list	*list;
+	char	*num;
 
-	list = (t_list *)malloc(sizeof(t_list));
-	if (list == NULL)
-		return (NULL);
-	list->content = content;
-	list->next = NULL;
-	return (list);
+	num = ft_itoa(va_arg(*ap, int));
+	ft_putstr(num);
+	*write_len += (int)ft_strlen_s(num);
+	ft_free_s((void **)&num);
 }
