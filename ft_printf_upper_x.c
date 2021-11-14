@@ -6,13 +6,13 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:08:47 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/14 14:09:00 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/11/14 15:31:46 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_print_upper_x(va_list *ap, int *write_len)
+void	ft_printf_upper_x(va_list *ap, int *write_len)
 {
 	char	*upper_hex;
 

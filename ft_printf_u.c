@@ -6,13 +6,13 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:07:47 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/14 14:07:56 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/11/14 15:31:50 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_print_u(va_list *ap, int *write_len)
+void	ft_printf_u(va_list *ap, int *write_len)
 {
 	char	*num;
 

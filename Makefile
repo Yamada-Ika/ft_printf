@@ -1,8 +1,6 @@
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror -c
 
-MAKE		:= make --warn-undefined-variables
-
 PRINTF_DIR	:= .
 LIBFT_DIR	:= libft
 
@@ -19,26 +17,26 @@ OBJS		:= $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR)
+$(NAME): $(LIBFT_A) $(OBJS)
 	cp $(LIBFT_A) $(NAME)
 	ar rc $(NAME) $(OBJS)
+
+$(LIBFT_A): empty
+	make -C $(LIBFT_DIR)
+
+empty:
 
 %.o: %.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	rm -rf $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	make -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -rf $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	make -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-libft:
-	touch $(OBJS)
-	make $(NAME)
-
-.PHONY: all clean fclean re libft
+.PHONY: all clean fclean re libft empty

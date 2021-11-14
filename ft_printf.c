@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/14 15:00:36 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/11/15 02:43:48 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 static void	ft_printf_non_converted_str(const char *format,
 	size_t head, size_t tail, int *write_len)
 {
-	char	*non_converted_str;
+	char	*str;
 
 	if (*write_len < 0)
 		return ;
-	non_converted_str = ft_substr(format, head, tail - head);
-	if (non_converted_str == NULL)
+	str = ft_substr(format, head, tail - head);
+	if (str == NULL)
 	{
 		*write_len = -1;
 		return ;
 	}
-	ft_putstr(non_converted_str);
-	*write_len += ft_strlen_s(non_converted_str);
-	ft_free_s((void **)&non_converted_str);
+	ft_putstr(str);
+	*write_len += ft_strlen_s(str);
+	ft_free_s((void **)&str);
 }
 
 static void	ft_printf_converted_str(const char *format,
@@ -58,7 +58,7 @@ static void	ft_printf_converted_str(const char *format,
 
 static int	ft_printf_helper(const char *format, va_list *ap)
 {
-	int			write_len;
+	int		write_len;
 	size_t	tail;
 	size_t	head;
 

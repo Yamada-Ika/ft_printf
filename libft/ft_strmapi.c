@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 04:12:18 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/10 23:48:21 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/25 10:56:52 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_p(va_list *ap, int *write_len)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char	*hex;
+	unsigned int		i;
+	char				*new_str;
 
-	hex = ft_ultoa_base((unsigned long)va_arg(*ap, void *), "0123456789abcdef");
-	if (hex == NULL)
+	if (s == NULL || (*f) == NULL)
+		return (NULL);
+	new_str = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (new_str == NULL)
+		return (NULL);
+	i = 0;
+	while (s[i] != '\0')
 	{
-		*write_len = -1;
-		return ;
+		new_str[i] = (*f)(i, s[i]);
+		i++;
 	}
-	ft_putstr("0x");
-	ft_putstr(hex);
-	*write_len += ft_strlen_s(hex) + 2;
-	ft_free_s((void **)&hex);
+	new_str[i] = '\0';
+	return (new_str);
 }

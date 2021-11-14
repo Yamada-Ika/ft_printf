@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 04:12:18 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/10 23:46:04 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/25 10:53:04 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_p(va_list *ap, int *write_len)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*hex;
+	void	*mem;
 
-	hex = ft_ultoa_base((unsigned long)va_arg(*ap, void *), "0123456789abcdef");
-	if (hex == NULL)
+	if (count == 0 || size == 0)
 	{
-		*write_len = -1;
-		return ;
+		count = 1;
+		size = 1;
 	}
-	ft_putstr("0x");
-	ft_putstr(hex);
-	*write_len += ft_strlen_s(hex) + 2;
-	ft_free_s((void **)&hex);
+	mem = malloc(size * count);
+	if (mem == NULL)
+		return (NULL);
+	ft_bzero(mem, size * count);
+	return (mem);
 }

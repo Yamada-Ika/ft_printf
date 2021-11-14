@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 04:12:18 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/10 23:47:17 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/25 10:56:57 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_p(va_list *ap, int *write_len)
+int	ft_strncmp(const char*s1, const char *s2, size_t n)
 {
-	char	*hex;
+	size_t				i;
+	const unsigned char	*cu_s1;
+	const unsigned char	*cu_s2;
 
-	hex = ft_ultoa_base((unsigned long)va_arg(*ap, void *), "0123456789abcdef");
-	if (hex == NULL)
-	{
-		*write_len = -1;
-		return ;
-	}
-	ft_putstr("0x");
-	ft_putstr(hex);
-	*write_len += ft_strlen_s(hex) + 2;
-	ft_free_s((void **)&hex);
+	cu_s1 = (const unsigned char *)s1;
+	cu_s2 = (const unsigned char *)s2;
+	i = 0;
+	if (n == 0)
+		return (0);
+	i = 0;
+	while (cu_s1[i] == cu_s2[i] && i < n - 1
+		&& !(cu_s1[i] == '\0' && cu_s2[i] == '\0'))
+		i++;
+	return (cu_s1[i] - cu_s2[i]);
 }

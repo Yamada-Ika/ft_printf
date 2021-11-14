@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 04:12:18 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/08 17:33:06 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/25 10:55:17 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_p(va_list *ap, int *write_len)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	char	*hex;
+	size_t		i;
+	char		*c_dst;
+	const char	*c_src;
 
-	hex = ft_ultoa_base((unsigned long)va_arg(*ap, void *), "0123456789abcdef");
-	if (hex == NULL)
+	c_dst = (char *)dst;
+	c_src = (const char *)src;
+	i = 0;
+	while (dst > src && i < len)
 	{
-		*write_len = -1;
-		return ;
+		c_dst[len - 1 - i] = c_src[len - 1 - i];
+		i++;
 	}
-	ft_putstr("0x");
-	ft_putstr(hex);
-	*write_len += ft_strlen_s(hex) + 2;
-	ft_free_s((void **)&hex);
+	while (dst < src && i < len)
+	{
+		c_dst[i] = c_src[i];
+		i++;
+	}
+	return (dst);
 }

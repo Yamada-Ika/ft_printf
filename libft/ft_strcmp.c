@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 04:12:18 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/28 21:15:14 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/28 21:22:40 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_p(va_list *ap, int *write_len)
+static size_t	ft_max(size_t num1, size_t num2)
 {
-	char	*hex;
+	if (num1 > num2)
+		return (num1);
+	return (num2);
+}
 
-	hex = ft_ultoa_base((unsigned long)va_arg(*ap, void *), "0123456789abcdef");
-	if (hex == NULL)
-	{
-		*write_len = -1;
-		return ;
-	}
-	ft_putstr("0x");
-	ft_putstr(hex);
-	*write_len += ft_strlen_s(hex) + 2;
-	ft_free_s((void **)&hex);
+int	ft_strcmp(const char*s1, const char *s2)
+{
+	size_t	longer_len;
+
+	longer_len = ft_max(ft_strlen(s1), ft_strlen(s2));
+	return (ft_strncmp(s1, s2, longer_len));
 }

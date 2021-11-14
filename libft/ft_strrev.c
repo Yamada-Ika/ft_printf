@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_strrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 04:12:18 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/28 17:12:30 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/31 00:12:25 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_p(va_list *ap, int *write_len)
+char	*ft_strrev(char *s)
 {
-	char	*hex;
+	size_t	s_len;
+	size_t	i;
+	char	tmp;
 
-	hex = ft_ultoa_base((unsigned long)va_arg(*ap, void *), "0123456789abcdef");
-	if (hex == NULL)
+	if (s == NULL)
+		return (NULL);
+	s_len = ft_strlen(s);
+	i = 0;
+	while (i < s_len / 2)
 	{
-		*write_len = -1;
-		return ;
+		tmp = s[i];
+		s[i] = s[s_len - (i + 1)];
+		s[s_len - (i + 1)] = tmp;
+		i++;
 	}
-	ft_putstr("0x");
-	ft_putstr(hex);
-	*write_len += ft_strlen_s(hex) + 2;
-	ft_free_s((void **)&hex);
+	return (s);
 }

@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:05:27 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 04:12:18 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/10 23:47:43 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/25 17:03:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_p(va_list *ap, int *write_len)
+void	ft_putstr_fd(char *c, int fd)
 {
-	char	*hex;
+	size_t	c_len;
+	size_t	prev_write_len;
+	char	*tmp_c;
 
-	hex = ft_ultoa_base((unsigned long)va_arg(*ap, void *), "0123456789abcdef");
-	if (hex == NULL)
-	{
-		*write_len = -1;
+	if (c == NULL)
 		return ;
+	tmp_c = c;
+	c_len = ft_strlen(tmp_c);
+	prev_write_len = c_len % INT_MAX;
+	write(fd, tmp_c, prev_write_len);
+	tmp_c += prev_write_len;
+	c_len /= INT_MAX;
+	while (c_len-- > 0)
+	{
+		write(fd, tmp_c, INT_MAX);
+		tmp_c += INT_MAX;
 	}
-	ft_putstr("0x");
-	ft_putstr(hex);
-	*write_len += ft_strlen_s(hex) + 2;
-	ft_free_s((void **)&hex);
 }

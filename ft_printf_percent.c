@@ -6,13 +6,13 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:09:18 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/14 14:09:28 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/11/14 15:31:54 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_print_percent(int *write_len)
+void	ft_printf_percent(int *write_len)
 {
 	ft_putchar('%');
 	*write_len += 1;
