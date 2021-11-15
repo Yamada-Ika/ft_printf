@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_c.c                                      :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 06:26:53 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 14:34:17 by iyamada          ###   ########.fr       */
+/*   Created: 2021/10/08 20:08:53 by iyamada           #+#    #+#             */
+/*   Updated: 2021/10/25 10:53:43 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_printf_c(va_list *ap, int *write_len)
+int	ft_isdigit(int c)
 {
-	ft_putchar(va_arg(*ap, int));
-	*write_len += 1;
+	return ('0' <= c && c <= '9');
 }

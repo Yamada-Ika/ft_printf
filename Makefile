@@ -10,14 +10,15 @@ LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
 NAME 		:= libftprintf.a
 HEADER		:= ft_printf.h
 SRCS		:= \
-	ft_printf.c         ft_printf_di.c      ft_printf_p.c       ft_printf_s.c       ft_printf_upper_x.c	\
-	ft_printf_c.c       ft_printf_lower_x.c ft_printf_percent.c ft_printf_u.c
+ft_printf.c         ft_printf_lower_x.c ft_printf_s.c		\
+ft_printf_c.c       ft_printf_p.c       ft_printf_u.c		\
+ft_printf_di.c      ft_printf_percent.c ft_printf_upper_x.c
 SRCS		:= $(addprefix $(PRINTF_DIR)/, $(SRCS))
 OBJS		:= $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT_A) $(OBJS)
+$(NAME): $(LIBFT_A) $(OBJS) $(HEADER)
 	cp $(LIBFT_A) $(NAME)
 	ar rc $(NAME) $(OBJS)
 
