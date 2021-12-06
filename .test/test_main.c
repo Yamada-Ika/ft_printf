@@ -96,4 +96,24 @@ int main(void) {
 	TEST("%% %%\n");
 	TEST("%% %% %%\n");
 	#endif
+
+	// mix
+	#ifdef MIX
+	int num;
+	TEST("%c %s %p %d %i %u %x %X %%\n", 'J', "string", &num, LONG_MIN, LONG_MAX, -1, -1, INT_MAX);
+	#endif
+
+	// Over INT_MAX length
+	#ifdef BIG_STR
+	long long size = 1LL * INT_MAX + 10LL;
+	char *str = (char *)malloc(size * sizeof(char));
+	memset(str, 'a', size - 1LL);
+	str[size - 1] = '\0';
+	printf("%d\n", printf("%s", str));
+	printf("%d\n", ft_printf("%s", str));
+	// TEST("%s\n", str);
+	#endif
+
+	// sleep(30);
+	// system("leaks ./a.out");
 }
