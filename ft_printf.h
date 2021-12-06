@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:05:54 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/06 12:17:41 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/07 02:27:50 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
 # include <stdarg.h>
 # include "libft/libft.h"
 
-int	ft_printf(const char *format, ...);
-int	ft_printf_c(va_list *ap, int write_len);
-int	ft_printf_s(va_list *ap, int write_len);
-int	ft_printf_p(va_list *ap, int write_len);
-int	ft_printf_di(va_list *ap, int write_len);
-int	ft_printf_u(va_list *ap, int write_len);
-int	ft_printf_lower_x(va_list *ap, int write_len);
-int	ft_printf_upper_x(va_list *ap, int write_len);
-int	ft_printf_percent(int write_len);
+# define ERROR_STATUS -1
+# define ERROR SIZE_T_MAX
+
+int		ft_printf(const char *format, ...);
+size_t	ft_printf_c(va_list *ap, size_t write_len);
+size_t	ft_printf_s(va_list *ap, size_t write_len);
+size_t	ft_printf_p(va_list *ap, size_t write_len);
+size_t	ft_printf_di(va_list *ap, size_t write_len);
+size_t	ft_printf_u(va_list *ap, size_t write_len);
+size_t	ft_printf_lower_x(va_list *ap, size_t write_len);
+size_t	ft_printf_upper_x(va_list *ap, size_t write_len);
+size_t	ft_printf_percent(size_t write_len);
 
 #endif

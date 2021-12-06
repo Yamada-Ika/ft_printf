@@ -6,14 +6,14 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/06 12:23:46 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/07 02:26:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	ft_printf_converted_str(const char *format,
-	va_list *ap, size_t index, int write_len)
+static size_t	ft_printf_converted_str(const char *format,
+	va_list *ap, size_t index, size_t write_len)
 {
 	if (write_len < 0)
 		return (write_len);
@@ -39,7 +39,7 @@ static int	ft_printf_converted_str(const char *format,
 
 static int	ft_printf_helper(const char *format, va_list *ap)
 {
-	int		write_len;
+	size_t	write_len;
 	size_t	i;
 
 	write_len = 0;
@@ -49,8 +49,6 @@ static int	ft_printf_helper(const char *format, va_list *ap)
 		if (format[i] == '%')
 		{
 			write_len = ft_printf_converted_str(format, ap, i, write_len);
-			if (write_len < 0)
-				return (write_len);
 			i++;
 		}
 		else
@@ -58,9 +56,11 @@ static int	ft_printf_helper(const char *format, va_list *ap)
 			ft_putchar(format[i]);
 			write_len++;
 		}
+		if (write_len > INT_MAX)
+			return (ERROR_STATUS);
 		i++;
 	}
-	return (write_len);
+	return ((int)write_len);
 }
 
 int	ft_printf(const char *format, ...)
