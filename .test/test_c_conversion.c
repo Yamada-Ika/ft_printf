@@ -2,17 +2,27 @@
 #include <stdio.h>
 
 void test_c_conversion(void) {
-	for (int i = - 100; i < 100; i++) {
-		printf("lib : %d\n", printf("%c\n", i));
-		printf("ft  : %d\n", ft_printf("%c\n", i));
+	int test_case_min = 40;
+	int test_case_max = 100;
+	int ret;
+
+	# ifdef FT_TEST
+	for (int i = test_case_min; i < test_case_max; i++) {
+		ret = ft_printf("%c", i);
+		printf("%d\n", ret);
+		fflush(stdout);
 	}
-	for (int i = - 100; i < 100; i++) {
-		printf("lib : %d\n", printf("%c%c\n", i, i));
-		printf("ft  : %d\n", ft_printf("%c%c\n", i, i));
+	# endif
+
+	# ifdef LIB_TEST
+	for (int i = test_case_min; i < test_case_max; i++) {
+		ret = printf("%c", i);
+		printf("%d\n", ret);
 	}
+	# endif
 }
 
 int main(void) {
 	test_c_conversion();
-	system("leaks a.out");
+	// system("leaks a.out");
 }
