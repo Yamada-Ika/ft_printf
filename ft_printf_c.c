@@ -6,14 +6,14 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 06:26:53 by iyamada           #+#    #+#             */
-/*   Updated: 2021/11/15 14:34:17 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/06 12:19:20 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_printf_c(va_list *ap, int *write_len)
+int	ft_printf_c(va_list *ap, int write_len)
 {
 	ft_putchar(va_arg(*ap, int));
-	*write_len += 1;
+	return (++write_len);
 }

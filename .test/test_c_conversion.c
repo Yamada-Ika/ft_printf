@@ -1,5 +1,4 @@
-#include "../ft_printf.h"
-#include <stdio.h>
+#include "test_ft_printf.h"
 
 void test_c_conversion(void) {
 	int test_case_min = 40;

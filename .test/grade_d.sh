@@ -2,8 +2,11 @@
 
 DUMP_FILE="/dev/null"
 TEST="test_d_conversion.c"
+LIB_TEST="LIB_TEST"
+FT_TEST="FT_TEST"
+LEAKS_TEST="LEAKS_TEST"
 
-gcc ${TEST} ../libftprintf.a 2> ${DUMP_FILE}
+gcc -D ${} ${LIB_TEST} ${TEST} ../libftprintf.a 2> ${DUMP_FILE}
 ./a.out 2> ${DUMP_FILE} | grep -a "lib" | awk '{print $3 $4}' > lib_result
 ./a.out 2> ${DUMP_FILE} | grep -a "ft" | awk '{print $3 $4}' > ft_result
 LEAKS_CNT=$(./a.out 2> ${DUMP_FILE} | grep -a 'leaks' | awk 'NR==3 {print $3}')
