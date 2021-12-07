@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -Wall -Wextra -Werror -c
+CFLAGS		:= -c #-Wall -Wextra -Werror
 
 PRINTF_DIR	:= .
 LIBFT_DIR	:= libft

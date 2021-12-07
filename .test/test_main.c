@@ -111,7 +111,16 @@ int main(void) {
 	str[size - 1] = '\0';
 	printf("%d\n", printf("%s", str));
 	printf("%d\n", ft_printf("%s", str));
-	// TEST("%s\n", str);
+	#endif
+
+	// Over INT_MAX length
+	#ifdef BIG_MIX
+	long long size = 1LL * INT_MAX + 0LL;
+	char *str = (char *)malloc(size * sizeof(char));
+	memset(str, '_', size - 1LL);
+	str[size - 1LL] = '\0';
+	printf("%d\n", printf("ab\n%s", str));
+	printf("%d\n", ft_printf("ab\n%s", str));
 	#endif
 
 	// sleep(30);

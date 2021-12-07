@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:05:54 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/07 02:27:50 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/07 03:29:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdarg.h>
 # include "libft/libft.h"
+# include <stdio.h>
 
 # define ERROR_STATUS -1
 # define ERROR SIZE_T_MAX
