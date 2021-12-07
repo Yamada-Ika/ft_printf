@@ -123,6 +123,37 @@ int main(void) {
 	printf("%d\n", ft_printf("ab\n%s", str));
 	#endif
 
+	// minimum field
+	#ifdef FIELD
+	TEST("[%1d]\n", 1000);
+	#endif
+
+	// zero padding
+	#ifdef ZERO
+	TEST("[%010d]\n", 1000);
+	TEST("[%01d]\n", 1000);
+	#endif
+
+	// dot
+	#ifdef DOT
+	TEST("[%.0d]\n", 0);
+	#endif
+
+	// sharp
+	#ifdef SHARP
+	TEST("[%#x]\n", 10);
+	#endif
+
+	// space
+	#ifdef SPACE
+	TEST("[% d]\n", -10);
+	#endif
+
+	// plus
+	#ifdef PLUS
+	TEST("[%+d]\n", 10);
+	#endif
+
 	// sleep(30);
 	// system("leaks ./a.out");
 }

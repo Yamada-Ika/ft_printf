@@ -1,7 +1,7 @@
 CC			:= gcc
 CFLAGS		:= -c #-Wall -Wextra -Werror
 
-PRINTF_DIR	:= .
+PRINTF_DIR	:= bonus
 LIBFT_DIR	:= libft
 
 LIBFT_A		:= libft.a
@@ -14,8 +14,8 @@ ft_printf.c         ft_printf_lower_x.c ft_printf_s.c		\
 ft_printf_c.c       ft_printf_p.c       ft_printf_u.c		\
 ft_printf_di.c      ft_printf_percent.c ft_printf_upper_x.c
 SRCS		:= $(addprefix $(PRINTF_DIR)/, $(SRCS))
+HEADER		:= $(addprefix $(PRINTF_DIR)/, $(HEADER))
 OBJS		:= $(SRCS:.c=.o)
-
 all: $(NAME)
 
 $(NAME): $(LIBFT_A) $(OBJS) $(HEADER)
