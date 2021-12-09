@@ -1,15 +1,22 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <assert.h>
-#include "../ft_printf.h"
+#include "../bonus/ft_printf.h"
 
 #define TEST(args...)						\
 {											\
 	int res_ft_printf = ft_printf(args);	\
 	int res_printf = printf(args);			\
 	fflush(stdout);							\
-	assert(res_printf == res_ft_printf);	\
+	printf("ft  : %d\n", res_ft_printf);	\
+	printf("lib : %d\n", res_printf);		\
 }
+
+// #define TEST(args...)				\
+// {									\
+// 	int res_printf = printf(args);		\
+// 	printf("%d\n", res_printf);		\
+// }
 
 int main(void) {
 	// non-conversion
@@ -125,35 +132,189 @@ int main(void) {
 
 	// minimum field
 	#ifdef FIELD
-	TEST("[%1d]\n", 1000);
+	// c
+	printf("-------- c --------\n");
+	TEST("[%000c]\n", 'a');
+	TEST("[%00c]\n", 'a');
+	TEST("[%0c]\n", 'a');
+	TEST("[%1c]\n", 'a');
+	TEST("[%2c]\n", 'a');
+	TEST("[%3c]\n", 'a');
+	printf("-------- c --------\n");
+	// s
+	printf("-------- s --------\n");
+	TEST("[%000s]\n", "");
+	TEST("[%00s]\n", "");
+	TEST("[%0s]\n", "");
+	TEST("[%0s]\n", "");
+	TEST("[%s]\n", "hello");
+	TEST("[%10s]\n", "hello");
+	TEST("[%1s]\n", "hello");
+	TEST("[%1s]\n", "hello");
+	printf("-------- s --------\n");
+	// p
+	printf("-------- p --------\n");
+	TEST("[%000p]\n", 0);
+	TEST("[%00p]\n", 0);
+	TEST("[%0p]\n", 0);
+	TEST("[%0p]\n", 1);
+	TEST("[%p]\n", 1000);
+	TEST("[%10p]\n", 1000);
+	TEST("[%1p]\n", INT_MAX);
+	TEST("[%1p]\n", INT_MIN);
+	printf("-------- p --------\n");
+	// d
+	printf("-------- d --------\n");
+	TEST("[%000d]\n", 0);
+	TEST("[%00d]\n", 0);
+	TEST("[%0d]\n", 0);
+	TEST("[%0d]\n", 1);
+	TEST("[%d]\n", 1000);
+	TEST("[%10d]\n", 1000);
+	TEST("[%1d]\n", INT_MAX);
+	TEST("[%1d]\n", INT_MIN);
+	printf("-------- d --------\n");
+	// i
+	printf("-------- i --------\n");
+	TEST("[%000i]\n", 0);
+	TEST("[%00i]\n", 0);
+	TEST("[%0i]\n", 0);
+	TEST("[%0i]\n", 1);
+	TEST("[%i]\n", 1000);
+	TEST("[%10i]\n", 1000);
+	TEST("[%1i]\n", INT_MAX);
+	TEST("[%1i]\n", INT_MIN);
+	printf("-------- i --------\n");
+	// u
+	printf("-------- u --------\n");
+	TEST("[%000u]\n", 0);
+	TEST("[%00u]\n", 0);
+	TEST("[%0u]\n", 0);
+	TEST("[%10u]\n", 0);
+	printf("-------- u --------\n");
+	// x
+	TEST("[%000x]\n", 0);
+	TEST("[%00x]\n", 0);
+	TEST("[%0x]\n", 0);
+	TEST("[%0x]\n", 1);
+	TEST("[%x]\n", 1000);
+	TEST("[%10x]\n", 1000);
+	TEST("[%1x]\n", INT_MAX);
+	TEST("[%1x]\n", INT_MIN);
+	// X
+	TEST("[%000X]\n", 0);
+	TEST("[%00X]\n", 0);
+	TEST("[%0X]\n", 0);
+	TEST("[%0X]\n", 1);
+	TEST("[%X]\n", 1000);
+	TEST("[%10X]\n", 1000);
+	TEST("[%1X]\n", INT_MAX);
+	TEST("[%1X]\n", INT_MIN);
 	#endif
 
 	// zero padding
 	#ifdef ZERO
-	TEST("[%010d]\n", 1000);
-	TEST("[%01d]\n", 1000);
+	TEST("[%00c]\n", 'a');
+	TEST("[%01c]\n", 'a');
+	TEST("[%02c]\n", 'a');
+	TEST("[%03c]\n", 'a');
+	TEST("[%010c]\n", 'a');
 	#endif
 
 	// dot
 	#ifdef DOT
+	printf("........ DOT ........\n");
+	// c
+	printf("-------- c --------\n");
+	TEST("[%.0c]\n", 'a');
+	TEST("[%.0c]\n", 'a');
+	TEST("[%.0c]\n", 'a');
+	TEST("[%1.1c]\n", 'a');
+	TEST("[%5.2c]\n", 'a');
+	TEST("[%3.1c]\n", 'a');
+	printf("-------- c --------\n");
+	// s
+	printf("-------- s --------\n");
+	TEST("[%0.0s]\n", "");
+	TEST("[%.0s]\n", "");
+	TEST("[%00s]\n", "");
+	TEST("[%0s]\n", "");
+	TEST("[%10.3s]\n", "hello");
+	TEST("[%1.6s]\n", "hello");
+	TEST("[%1.1s]\n", "hello");
+	TEST("[%10.10s]\n", "hello");
+	TEST("[%10.6s]\n", "hello");
+	printf("-------- s --------\n");
+	// p
+	printf("-------- p --------\n");
+	TEST("[%000p]\n", 0);
+	TEST("[%00p]\n", 0);
+	TEST("[%0p]\n", 0);
+	TEST("[%0p]\n", 1);
+	TEST("[%p]\n", 1000);
+	TEST("[%.0p]\n", 0);
+	TEST("[%0.0p]\n", 0);
+	TEST("[%10.7p]\n", 1000);
+	TEST("[%20.10p]\n", INT_MAX);
+	TEST("[%20.10p]\n", INT_MIN);
+	printf("--------------------\n");
+	// d
+	printf("-------- d --------\n");
+	TEST("[%0.0d]\n", 0);
 	TEST("[%.0d]\n", 0);
+	TEST("[%00d]\n", 0);
+	TEST("[%0d]\n", 0);
+	TEST("[%0d]\n", 1);
+	TEST("[%10.3d]\n", 1000);
+	TEST("[%10.5d]\n", 0);
+	TEST("[%.5d]\n", 0);
+	TEST("[%10d]\n", 0);
+	TEST("[%1.5d]\n", 1000);
+	TEST("[%.1d]\n", INT_MAX);
+	TEST("[%.1d]\n", INT_MIN);
+	printf("-------- d --------\n");
+	printf("....................\n");
 	#endif
 
 	// sharp
 	#ifdef SHARP
+	TEST("[%#c]\n", 'b');
 	TEST("[%#x]\n", 10);
+	TEST("[%#0.0x]\n", 0);
+	TEST("[%#0.0x]\n", 100);
+	TEST("[%#10.5x]\n", 100);
+	TEST("[%#5.10x]\n", 100);
+	TEST("[%#x]\n", -1);
+	TEST("[%##x]\n", 100);
+	TEST("[%#X]\n", 10);
+	TEST("[%#0.0X]\n", 0);
+	TEST("[%#0.0X]\n", 100);
+	TEST("[%#10.5X]\n", 100);
+	TEST("[%#5.10X]\n", 100);
+	TEST("[%#X]\n", -1);
+	TEST("[%##X]\n", 100);
 	#endif
 
 	// space
 	#ifdef SPACE
-	TEST("[% d]\n", -10);
+	TEST("[%  d]\n", -10);
+	TEST("[%  d]\n", 10);
+	TEST("[% #x]\n", -1);
+	TEST("[% #x]\n", 100);
 	#endif
 
 	// plus
 	#ifdef PLUS
 	TEST("[%+d]\n", 10);
+	TEST("[%+d]\n", -10);
+	TEST("[%+#x]\n", 10);
+	TEST("[%++d]\n", 10);
 	#endif
 
+	#ifdef ALL_MIX
+	TEST("[%04c]fefe[%10.5s]fewo\n", 'a', "hello");
+	TEST("[%04c][%10.5s][%5.5p][%+10.9d][%+u][%#12.1x][% X][%%]\n", 'a', "hello", 100000, INT_MAX, -1, -1, -900);
+	#endif
 	// sleep(30);
 	// system("leaks ./a.out");
 }
