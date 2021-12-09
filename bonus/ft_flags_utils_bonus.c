@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_flags_utils.c                                   :+:      :+:    :+:   */
+/*   ft_flags_utils_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/09 04:06:10 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/10 04:08:00 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 {
@@ -54,19 +54,39 @@ bool	ft_is_zero_precision(t_flag_manager *flags, char *str, size_t str_len)
 	return (str_len == 1 && str[0] == '0' && flags->is_dot && flags->precision == 0);
 }
 
-size_t	ft_put_suffix(t_flag_manager *flags, size_t write_len)
+size_t	ft_put_suffix(t_flag_manager *flags, char *str, size_t str_len)
 {
-	if (flags->is_sharp && flags->conversion == 'x' || flags->conversion == 'p')
+	if (str[0] == '0' && flags->conversion != 'p')
+		return (str_len);
+	if ((flags->is_sharp && flags->conversion == 'x') || flags->conversion == 'p')
 	{
 		ft_putstr("0x");
-		write_len += 2;
+		str_len += 2;
 	}
 	if (flags->is_sharp && flags->conversion == 'X')
 	{
 		ft_putstr("0X");
-		write_len += 2;
+		str_len += 2;
 	}
-	return (write_len);
+	return (str_len);
+}
+
+long long	ft_abs(long long n)
+{
+	if (n < 0)
+		n *= -1;
+	return (n);
+}
+
+void	ft_cut_sign(char **num)
+{
+	size_t		size;
+	long long	abs_num;
+
+	size = ft_strlen_s(*num);
+	abs_num = ft_abs(atoll(*num));
+	ft_free_s((void **)num);
+	*num = ft_lltoa(abs_num);
 }
 
 size_t	ft_print_with_flags(t_flag_manager *flags, char *str, size_t write_len)
@@ -75,39 +95,77 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char *str, size_t write_len)
 	size_t	num_len;
 	size_t	space_fill_num;
 	size_t	zero_fill_num;
+	size_t	space_flag_fill;
+	size_t	plus_fill;
+	size_t	minus_fill;
 
 	str_len = ft_strlen_s(str);
 	num_len = str_len;
 	if (ft_is_zero_precision(flags, str, str_len))
-		return (ft_put_suffix(flags, write_len));
-	if (flags->is_sharp && flags->conversion == 'x' || flags->is_sharp && flags->conversion == 'X' || flags->conversion == 'p')
+		return (ft_put_suffix(flags, str, write_len));
+	if ((flags->is_sharp && flags->conversion == 'x') || (flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p')
 		str_len += 2;
 	space_fill_num = 0;
 	zero_fill_num = 0;
+	space_flag_fill = 0;
+	plus_fill = 0;
+	minus_fill = 0;
+	if (flags->is_space && ft_isdigit(str[0]) && flags->conversion == 'd')
+		space_flag_fill++;
+	if (flags->is_plus && ft_isdigit(str[0]) && flags->conversion == 'd')
+		plus_fill++;
+	if (flags->is_zero && flags->precision == 0)
+		flags->precision = flags->width;
+	if (flags->conversion == 'd' && str[0] == '-')
+		num_len--;
 	if (num_len < flags->precision && flags->conversion != 's')
 		zero_fill_num = flags->precision - num_len;
 	if (num_len < flags->width && flags->width >= flags->precision)
-		space_fill_num = flags->width - (zero_fill_num + str_len);
-	ft_fill_c(space_fill_num, ' ');
-	ft_put_suffix(flags, write_len);
+		space_fill_num = flags->width - (zero_fill_num + str_len) - (space_flag_fill + plus_fill);
+	if (flags->is_minus == false)
+		ft_fill_c(space_fill_num, ' ');
+	if (flags->conversion == 'd' && str[0] == '-')
+	{
+		minus_fill++;
+		str_len--;
+		ft_cut_sign(&str);
+		if (str == NULL)
+			return (ERROR);
+	}
+	ft_fill_c(minus_fill, '-');
+	ft_fill_c(space_flag_fill, ' ');
+	ft_fill_c(plus_fill, '+');
+	str_len = ft_put_suffix(flags, str, num_len);
 	ft_fill_c(zero_fill_num, '0');
 	ft_putstr(str);
-	write_len += str_len + space_fill_num + zero_fill_num;
+	if (flags->is_minus == true)
+		ft_fill_c(space_fill_num, ' ');
+	write_len += str_len + space_fill_num + zero_fill_num + space_flag_fill + plus_fill + minus_fill;
 	return (write_len);
 }
 
-size_t	ft_print_fill(t_flag_manager *flags, size_t write_len)
+size_t	ft_print_fill(t_flag_manager *flags, size_t write_len, int c)
 {
 	size_t	fill_num;
 
 	fill_num = 0;
+	if (flags->is_minus == true)
+	{
+		ft_putchar(c);
+		write_len++;
+	}
 	if (flags->width > 0)
 		fill_num = flags->width - 1;
 	if (flags->is_zero == true)
 		ft_fill_c(fill_num, '0');
 	else if (flags->is_zero == false)
 		ft_fill_c(fill_num, ' ');
-	return (fill_num);
+	if (flags->is_minus == false)
+	{
+		ft_putchar(c);
+		write_len++;
+	}
+	return (write_len + fill_num);
 }
 
 void	ft_fill_c(size_t fill_num, char c)
@@ -135,7 +193,7 @@ void	ft_init_flag_manager(t_flag_manager *flags)
 	flags->precision = 0;
 }
 
-bool	ft_is_conversion(const char *format, size_t i, t_flag_manager *flags)
+bool	ft_is_conversion(const char *format, size_t i)
 {
 	return (format[i] == 'c' || format[i] == 's' || format[i] == 'p' \
 		|| format[i] == 'd' || format[i] == 'i' || format[i] == 'u' \
@@ -169,7 +227,7 @@ void	ft_get_flags(const char *format, size_t *i, t_flag_manager *flags)
 	init_i = *i;
 	while (format[*i] != '\0')
 	{
-		if (ft_is_conversion(format, *i, flags))
+		if (ft_is_conversion(format, *i))
 		{
 			ft_set_conversion(format, *i, flags);
 			return ;

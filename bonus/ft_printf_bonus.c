@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/09 03:51:43 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/10 01:14:25 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 static size_t	ft_printf_converted_str(const char *format,
 	va_list *ap, size_t index, size_t write_len, t_flag_manager *flags)
@@ -32,7 +32,7 @@ static size_t	ft_printf_converted_str(const char *format,
 	else if (format[index] == 'X')
 		write_len = ft_printf_upper_x(ap, write_len, flags);
 	else if (format[index] == '%')
-		write_len = ft_printf_percent(write_len, flags);
+		write_len = ft_printf_percent(write_len);
 	return (write_len);
 }
 
