@@ -220,8 +220,10 @@ int main(void) {
 	#ifdef ZERO
 	// d
 	printf("-------- d --------\n");
-	TEST("[ %01d ]\n", 0);
+	// TEST("[ %01d ]\n", 0);
+	// exit(1);
 	TEST("[ %02d ]\n", -1);
+	// exit(1);
 	TEST("[ %04d ]\n", 9);
 	TEST("[ %01d ]\n", 10);
 	TEST("[ %02d ]\n", 11);
@@ -822,7 +824,7 @@ int main(void) {
 	// printf("-------- s --------\n");
 	// p
 	printf("-------- p --------\n");
-	TEST(" %-2p \n", 1);
+	TEST(" [%-2p] \n", 1);
 	// TEST("[%-00p]\n", 0);
 	// TEST("[%-0p]\n", 0);
 	// TEST("[%-0p]\n", 1);

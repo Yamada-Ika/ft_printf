@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:04:55 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/10 01:26:10 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/10 17:14:43 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ size_t	ft_printf_s(va_list *ap, size_t write_len, t_flag_manager *flags)
 	if (write_len + str_len >= INT_MAX)
 		return (ERROR);
 	cutted_off_str = ft_cut_off_str(heap_str, str_len, flags);
-	write_len = ft_print_with_flags(flags, cutted_off_str, write_len);
+	write_len = ft_print_with_flags(flags, &cutted_off_str, write_len);
 	ft_free_s((void **)&cutted_off_str);
 	return (write_len);
 }

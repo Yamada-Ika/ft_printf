@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:05:54 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/10 01:23:07 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/10 17:18:33 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../libft/libft.h"
 # include <stdbool.h>
 # include <stdio.h>
+#include <malloc/malloc.h>
 
 # define ERROR_STATUS -1
 # define ERROR SIZE_T_MAX
@@ -48,7 +49,7 @@ void	ft_get_flags(const char *format, size_t *i, t_flag_manager *flags);
 void	ft_init_flag_manager(t_flag_manager *flags);
 size_t	ft_print_fill(t_flag_manager *flags, size_t write_len, int c);
 void	ft_fill_c(size_t fill_num, char c);
-size_t	ft_print_with_flags(t_flag_manager *flags, char *str, size_t write_len);
+size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len);
 size_t	ft_print_di_with_flags(t_flag_manager *flags, char *str, size_t write_len);
 char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags);
 

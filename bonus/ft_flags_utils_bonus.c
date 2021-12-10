@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/10 04:08:00 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/10 17:37:08 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ size_t	ft_print_di_with_flags(t_flag_manager *flags, char *str, size_t write_len
 	ft_fill_c(space_fill, ' ');
 	ft_fill_c(plus_fill, '+');
 	write_len += space_fill + plus_fill;
-	return (ft_print_with_flags(flags, str, write_len));
+	return (ft_print_with_flags(flags, &str, write_len));
 }
 
 bool	ft_is_zero_precision(t_flag_manager *flags, char *str, size_t str_len)
@@ -85,11 +85,15 @@ void	ft_cut_sign(char **num)
 
 	size = ft_strlen_s(*num);
 	abs_num = ft_abs(atoll(*num));
+	// printf("num : %s\n", *num);
+	// printf("num : %s\n", *num);
+	// printf("malloc_size(num) : %zu\n", malloc_size(*num));
 	ft_free_s((void **)num);
+	// printf("malloc_size(num) : %zu\n", malloc_size(*num));
 	*num = ft_lltoa(abs_num);
 }
 
-size_t	ft_print_with_flags(t_flag_manager *flags, char *str, size_t write_len)
+size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 {
 	size_t	str_len;
 	size_t	num_len;
@@ -99,10 +103,10 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char *str, size_t write_len)
 	size_t	plus_fill;
 	size_t	minus_fill;
 
-	str_len = ft_strlen_s(str);
+	str_len = ft_strlen_s(*str);
 	num_len = str_len;
-	if (ft_is_zero_precision(flags, str, str_len))
-		return (ft_put_suffix(flags, str, write_len));
+	if (ft_is_zero_precision(flags, *str, str_len))
+		return (ft_put_suffix(flags, *str, write_len));
 	if ((flags->is_sharp && flags->conversion == 'x') || (flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p')
 		str_len += 2;
 	space_fill_num = 0;
@@ -110,34 +114,45 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char *str, size_t write_len)
 	space_flag_fill = 0;
 	plus_fill = 0;
 	minus_fill = 0;
-	if (flags->is_space && ft_isdigit(str[0]) && flags->conversion == 'd')
+	if (flags->is_space && ft_isdigit(*(str)[0]) && flags->conversion == 'd')
 		space_flag_fill++;
-	if (flags->is_plus && ft_isdigit(str[0]) && flags->conversion == 'd')
+	if (flags->is_plus && ft_isdigit(*(str)[0]) && flags->conversion == 'd')
 		plus_fill++;
 	if (flags->is_zero && flags->precision == 0)
 		flags->precision = flags->width;
-	if (flags->conversion == 'd' && str[0] == '-')
-		num_len--;
 	if (num_len < flags->precision && flags->conversion != 's')
 		zero_fill_num = flags->precision - num_len;
-	if (num_len < flags->width && flags->width >= flags->precision)
+	// printf("space_fill_num : %zu\n", space_fill_num);
+	// printf("flags->width : %zu\n", flags->width);
+	// printf("zero_fill_num : %zu\n", zero_fill_num);
+	// printf("str_len : %zu\n", str_len);
+	// printf("space_flag_fill : %zu\n", space_flag_fill);
+	// printf("plus_fill : %zu\n", plus_fill);
+	// printf("num_len : %zu\n", num_len);
+	if (num_len < flags->width && flags->width >= flags->precision && flags->width > str_len)
 		space_fill_num = flags->width - (zero_fill_num + str_len) - (space_flag_fill + plus_fill);
+	if (flags->conversion == 'd' && *(str)[0] == '-')
+		num_len--;
+	// printf("space_fill_num : %zu\n", space_fill_num);
+	// exit(1);
 	if (flags->is_minus == false)
 		ft_fill_c(space_fill_num, ' ');
-	if (flags->conversion == 'd' && str[0] == '-')
+	if (flags->conversion == 'd' && *(str)[0] == '-')
 	{
 		minus_fill++;
 		str_len--;
-		ft_cut_sign(&str);
-		if (str == NULL)
+		ft_cut_sign(str);
+		if (*str == NULL)
 			return (ERROR);
 	}
+	// printf("space_flag_fill : %zu\n", space_flag_fill);
+	// exit(1);
 	ft_fill_c(minus_fill, '-');
 	ft_fill_c(space_flag_fill, ' ');
 	ft_fill_c(plus_fill, '+');
-	str_len = ft_put_suffix(flags, str, num_len);
+	str_len = ft_put_suffix(flags, *str, num_len);
 	ft_fill_c(zero_fill_num, '0');
-	ft_putstr(str);
+	ft_putstr(*str);
 	if (flags->is_minus == true)
 		ft_fill_c(space_fill_num, ' ');
 	write_len += str_len + space_fill_num + zero_fill_num + space_flag_fill + plus_fill + minus_fill;
