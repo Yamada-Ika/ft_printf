@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/12 02:58:31 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/12 03:06:30 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,6 @@ void	ft_init_fill_manager(t_fill_manager *fills)
 	fills->minus_fill = 0;
 }
 
-bool	ft_is_zero_precision(t_flag_manager *flags, char *str, size_t str_len)
-{
-	return (str_len == 1 && str[0] == '0' && flags->is_dot && flags->precision == 0);
-}
-
 bool	ft_is_print_prefix(t_flag_manager *flags)
 {
 	return (((flags->is_sharp && flags->conversion == 'x') || \
@@ -131,6 +126,11 @@ size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *st
 	return (str_len + fills->space_fill_num + fills->zero_fill_num + fills->space_flag_fill + fills->plus_fill + fills->minus_fill);
 }
 
+bool	ft_is_zero_precision(t_flag_manager *flags, char *str, size_t str_len)
+{
+	return (str_len == 1 && str[0] == '0' && flags->is_dot && flags->precision == 0);
+}
+
 size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 {
 	size_t	str_len;
@@ -139,9 +139,9 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 
 	str_len = ft_strlen_s(*str);
 	num_len = str_len;
-	ft_calc_fill(flags, &fills, str, str_len, num_len);
 	if (ft_is_zero_precision(flags, *str, str_len))
 		return (ft_put_suffix(flags, *str, write_len));
+	ft_calc_fill(flags, &fills, str, str_len, num_len);
 	if (flags->conversion == 'd' && (*str)[0] == '-')
 	{
 		fills.minus_fill++;
