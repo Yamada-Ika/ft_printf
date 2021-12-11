@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/12 03:06:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/12 03:07:29 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 	return (str);
 }
 
-size_t	ft_put_suffix(t_flag_manager *flags, char *str, size_t str_len)
+size_t	ft_put_prefix(t_flag_manager *flags, char *str, size_t str_len)
 {
 	if (str[0] == '0' && flags->conversion != 'p')
 		return (str_len);
@@ -118,7 +118,7 @@ size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *st
 	ft_fill_c(fills->space_flag_fill, ' ');
 	ft_fill_c(fills->plus_fill, '+');
 	if (flags->conversion != 'd')
-		str_len = ft_put_suffix(flags, str, num_len);
+		str_len = ft_put_prefix(flags, str, num_len);
 	ft_fill_c(fills->zero_fill_num, '0');
 	ft_putstr(str);
 	if (flags->is_minus == true)
@@ -140,7 +140,7 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 	str_len = ft_strlen_s(*str);
 	num_len = str_len;
 	if (ft_is_zero_precision(flags, *str, str_len))
-		return (ft_put_suffix(flags, *str, write_len));
+		return (ft_put_prefix(flags, *str, write_len));
 	ft_calc_fill(flags, &fills, str, str_len, num_len);
 	if (flags->conversion == 'd' && (*str)[0] == '-')
 	{
