@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/12 02:30:40 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/12 02:38:09 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,6 @@ char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 		}
 	}
 	return (str);
-}
-
-size_t	ft_print_di_with_flags(t_flag_manager *flags, char *str, size_t write_len)
-{
-	size_t	space_fill;
-	size_t	plus_fill;
-
-	space_fill = 0;
-	plus_fill = 0;
-	if (flags->is_space && ft_isdigit(str[0]))
-		space_fill++;
-	if (flags->is_plus && ft_isdigit(str[0]))
-		plus_fill++;
-	ft_fill_c(space_fill, ' ');
-	ft_fill_c(plus_fill, '+');
-	write_len += space_fill + plus_fill;
-	return (ft_print_with_flags(flags, &str, write_len));
 }
 
 size_t	ft_put_suffix(t_flag_manager *flags, char *str, size_t str_len)
