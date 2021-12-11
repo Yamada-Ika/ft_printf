@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/12 03:07:29 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/12 03:40:24 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 	if (ft_is_print_prefix(flags))
 		str_len += 2;
 	ft_init_fill_manager(fills);
-	if (flags->is_space && ft_isdigit((*str)[0]) && flags->conversion == 'd')
+	if (flags->is_space && (*str)[0] != '-' && flags->conversion == 'd')
 		fills->space_flag_fill++;
-	if (flags->is_plus && ft_isdigit((*str)[0]) && flags->conversion == 'd')
+	if (flags->is_plus && (*str)[0] != '-' && flags->conversion == 'd')
 		fills->plus_fill++;
 	if (flags->is_zero && flags->precision == 0 && !flags->is_minus)
 	{
