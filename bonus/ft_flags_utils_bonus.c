@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/10 17:37:08 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/12 02:16:13 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,6 @@ size_t	ft_print_di_with_flags(t_flag_manager *flags, char *str, size_t write_len
 	return (ft_print_with_flags(flags, &str, write_len));
 }
 
-bool	ft_is_zero_precision(t_flag_manager *flags, char *str, size_t str_len)
-{
-	return (str_len == 1 && str[0] == '0' && flags->is_dot && flags->precision == 0);
-}
-
 size_t	ft_put_suffix(t_flag_manager *flags, char *str, size_t str_len)
 {
 	if (str[0] == '0' && flags->conversion != 'p')
@@ -85,102 +80,117 @@ void	ft_cut_sign(char **num)
 
 	size = ft_strlen_s(*num);
 	abs_num = ft_abs(atoll(*num));
-	// printf("num : %s\n", *num);
-	// printf("num : %s\n", *num);
-	// printf("malloc_size(num) : %zu\n", malloc_size(*num));
 	ft_free_s((void **)num);
-	// printf("malloc_size(num) : %zu\n", malloc_size(*num));
 	*num = ft_lltoa(abs_num);
+}
+
+void	ft_init_fill_manager(t_fill_manager *fills)
+{
+	fills->space_fill_num = 0;
+	fills->zero_fill_num = 0;
+	fills->space_flag_fill = 0;
+	fills->plus_fill = 0;
+	fills->minus_fill = 0;
+}
+
+bool	ft_is_zero_precision(t_flag_manager *flags, char *str, size_t str_len)
+{
+	return (str_len == 1 && str[0] == '0' && flags->is_dot && flags->precision == 0);
+}
+
+bool	ft_is_print_prefix(t_flag_manager *flags)
+{
+	return (((flags->is_sharp && flags->conversion == 'x') || \
+		(flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p'));
 }
 
 size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 {
 	size_t	str_len;
 	size_t	num_len;
-	size_t	space_fill_num;
-	size_t	zero_fill_num;
-	size_t	space_flag_fill;
-	size_t	plus_fill;
-	size_t	minus_fill;
+	t_fill_manager	fills;
 
 	str_len = ft_strlen_s(*str);
 	num_len = str_len;
 	if (ft_is_zero_precision(flags, *str, str_len))
 		return (ft_put_suffix(flags, *str, write_len));
-	if ((flags->is_sharp && flags->conversion == 'x') || (flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p')
+	if (ft_is_print_prefix(flags))
 		str_len += 2;
-	space_fill_num = 0;
-	zero_fill_num = 0;
-	space_flag_fill = 0;
-	plus_fill = 0;
-	minus_fill = 0;
-	if (flags->is_space && ft_isdigit(*(str)[0]) && flags->conversion == 'd')
-		space_flag_fill++;
-	if (flags->is_plus && ft_isdigit(*(str)[0]) && flags->conversion == 'd')
-		plus_fill++;
-	if (flags->is_zero && flags->precision == 0)
-		flags->precision = flags->width;
-	if (num_len < flags->precision && flags->conversion != 's')
-		zero_fill_num = flags->precision - num_len;
-	// printf("space_fill_num : %zu\n", space_fill_num);
-	// printf("flags->width : %zu\n", flags->width);
-	// printf("zero_fill_num : %zu\n", zero_fill_num);
-	// printf("str_len : %zu\n", str_len);
-	// printf("space_flag_fill : %zu\n", space_flag_fill);
-	// printf("plus_fill : %zu\n", plus_fill);
-	// printf("num_len : %zu\n", num_len);
-	if (num_len < flags->width && flags->width >= flags->precision && flags->width > str_len)
-		space_fill_num = flags->width - (zero_fill_num + str_len) - (space_flag_fill + plus_fill);
-	if (flags->conversion == 'd' && *(str)[0] == '-')
-		num_len--;
-	// printf("space_fill_num : %zu\n", space_fill_num);
-	// exit(1);
-	if (flags->is_minus == false)
-		ft_fill_c(space_fill_num, ' ');
-	if (flags->conversion == 'd' && *(str)[0] == '-')
+	ft_init_fill_manager(&fills);
+	if (flags->is_space && ft_isdigit((*str)[0]) && flags->conversion == 'd')
+		fills.space_flag_fill++;
+	if (flags->is_plus && ft_isdigit((*str)[0]) && flags->conversion == 'd')
+		fills.plus_fill++;
+	if (flags->is_zero && flags->precision == 0 && !flags->is_minus)
 	{
-		minus_fill++;
+		flags->precision = flags->width;
+		flags->width = 0;
+	}
+	if (flags->conversion == 'd' && (*str)[0] == '-' && flags->is_dot)
+		num_len--;
+	if (num_len < flags->precision && flags->conversion != 's' && !((flags->is_sharp && flags->conversion == 'x') || (flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p'))
+		fills.zero_fill_num = flags->precision - num_len;
+	else if (str_len < flags->precision)
+		fills.zero_fill_num = flags->precision - str_len;
+	if (((flags->is_sharp && flags->conversion == 'x') || (flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p') && flags->width > 0 && flags->is_dot && flags->precision > num_len)
+		fills.zero_fill_num = flags->precision - num_len;
+	if (flags->conversion == 's' && flags->is_dot)
+		fills.zero_fill_num = 0;
+	if (str_len < flags->width && flags->width >= flags->precision)
+		fills.space_fill_num = flags->width - (fills.zero_fill_num + str_len) - (fills.space_flag_fill + fills.plus_fill);
+	if (flags->is_minus == false)
+		ft_fill_c(fills.space_fill_num, ' ');
+	if (flags->conversion == 'd' && (*str)[0] == '-')
+	{
+		fills.minus_fill++;
 		str_len--;
 		ft_cut_sign(str);
 		if (*str == NULL)
 			return (ERROR);
 	}
-	// printf("space_flag_fill : %zu\n", space_flag_fill);
-	// exit(1);
-	ft_fill_c(minus_fill, '-');
-	ft_fill_c(space_flag_fill, ' ');
-	ft_fill_c(plus_fill, '+');
-	str_len = ft_put_suffix(flags, *str, num_len);
-	ft_fill_c(zero_fill_num, '0');
+	ft_fill_c(fills.minus_fill, '-');
+	ft_fill_c(fills.space_flag_fill, ' ');
+	ft_fill_c(fills.plus_fill, '+');
+	if (flags->conversion != 'd')
+		str_len = ft_put_suffix(flags, *str, num_len);
+	ft_fill_c(fills.zero_fill_num, '0');
 	ft_putstr(*str);
 	if (flags->is_minus == true)
-		ft_fill_c(space_fill_num, ' ');
-	write_len += str_len + space_fill_num + zero_fill_num + space_flag_fill + plus_fill + minus_fill;
+		ft_fill_c(fills.space_fill_num, ' ');
+	write_len += str_len + fills.space_fill_num + fills.zero_fill_num + fills.space_flag_fill + fills.plus_fill + fills.minus_fill;
 	return (write_len);
 }
 
 size_t	ft_print_fill(t_flag_manager *flags, size_t write_len, int c)
 {
-	size_t	fill_num;
+	size_t	space_fill;
+	size_t	zero_fill;
 
-	fill_num = 0;
+	space_fill = 0;
+	zero_fill = 0;
 	if (flags->is_minus == true)
 	{
 		ft_putchar(c);
 		write_len++;
 	}
 	if (flags->width > 0)
-		fill_num = flags->width - 1;
-	if (flags->is_zero == true)
-		ft_fill_c(fill_num, '0');
-	else if (flags->is_zero == false)
-		ft_fill_c(fill_num, ' ');
+	{
+		if (flags->is_zero && !flags->is_minus)
+			zero_fill = flags->width - 1;
+		else
+			space_fill = flags->width - 1;
+	}
+	if (flags->is_zero && !flags->is_minus)
+		ft_fill_c(zero_fill, '0');
+	ft_fill_c(space_fill, ' ');
+	if (flags->is_zero && flags->is_minus)
+		ft_fill_c(zero_fill, '0');
 	if (flags->is_minus == false)
 	{
 		ft_putchar(c);
 		write_len++;
 	}
-	return (write_len + fill_num);
+	return (write_len + space_fill + zero_fill);
 }
 
 void	ft_fill_c(size_t fill_num, char c)

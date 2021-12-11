@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:05:54 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/10 17:18:33 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/11 01:50:41 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,15 @@ typedef struct s_flag_manager
 	size_t	precision;
 }	t_flag_manager;
 
+typedef struct s_fill_manager
+{
+	size_t	space_fill_num;
+	size_t	zero_fill_num;
+	size_t	space_flag_fill;
+	size_t	plus_fill;
+	size_t	minus_fill;
+}	t_fill_manager;
+
 int		ft_printf(const char *format, ...);
 size_t	ft_printf_c(va_list *ap, size_t write_len, t_flag_manager *flags);
 size_t	ft_printf_s(va_list *ap, size_t write_len, t_flag_manager *flags);
@@ -43,7 +52,7 @@ size_t	ft_printf_di(va_list *ap, size_t write_len, t_flag_manager *flags);
 size_t	ft_printf_u(va_list *ap, size_t write_len, t_flag_manager *flags);
 size_t	ft_printf_lower_x(va_list *ap, size_t write_len, t_flag_manager *flags);
 size_t	ft_printf_upper_x(va_list *ap, size_t write_len, t_flag_manager *flags);
-size_t	ft_printf_percent(size_t write_len);
+size_t	ft_printf_percent(size_t write_len, t_flag_manager *flags);
 
 void	ft_get_flags(const char *format, size_t *i, t_flag_manager *flags);
 void	ft_init_flag_manager(t_flag_manager *flags);
