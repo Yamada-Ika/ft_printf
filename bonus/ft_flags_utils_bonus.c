@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/12 02:16:13 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/12 02:30:40 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,34 @@ bool	ft_is_print_prefix(t_flag_manager *flags)
 		(flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p'));
 }
 
+void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t str_len, size_t num_len)
+{
+	if (ft_is_print_prefix(flags))
+		str_len += 2;
+	ft_init_fill_manager(fills);
+	if (flags->is_space && ft_isdigit((*str)[0]) && flags->conversion == 'd')
+		fills->space_flag_fill++;
+	if (flags->is_plus && ft_isdigit((*str)[0]) && flags->conversion == 'd')
+		fills->plus_fill++;
+	if (flags->is_zero && flags->precision == 0 && !flags->is_minus)
+	{
+		flags->precision = flags->width;
+		flags->width = 0;
+	}
+	if (flags->conversion == 'd' && (*str)[0] == '-' && flags->is_dot)
+		num_len--;
+	if (num_len < flags->precision && flags->conversion != 's' && !ft_is_print_prefix(flags))
+		fills->zero_fill_num = flags->precision - num_len;
+	else if (str_len < flags->precision)
+		fills->zero_fill_num = flags->precision - str_len;
+	if (ft_is_print_prefix(flags) && flags->width > 0 && flags->is_dot && flags->precision > num_len)
+		fills->zero_fill_num = flags->precision - num_len;
+	if (flags->conversion == 's' && flags->is_dot)
+		fills->zero_fill_num = 0;
+	if (str_len < flags->width && flags->width >= flags->precision)
+		fills->space_fill_num = flags->width - (fills->zero_fill_num + str_len) - (fills->space_flag_fill + fills->plus_fill);
+}
+
 size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 {
 	size_t	str_len;
@@ -112,32 +140,9 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 
 	str_len = ft_strlen_s(*str);
 	num_len = str_len;
+	ft_calc_fill(flags, &fills, str, str_len, num_len);
 	if (ft_is_zero_precision(flags, *str, str_len))
 		return (ft_put_suffix(flags, *str, write_len));
-	if (ft_is_print_prefix(flags))
-		str_len += 2;
-	ft_init_fill_manager(&fills);
-	if (flags->is_space && ft_isdigit((*str)[0]) && flags->conversion == 'd')
-		fills.space_flag_fill++;
-	if (flags->is_plus && ft_isdigit((*str)[0]) && flags->conversion == 'd')
-		fills.plus_fill++;
-	if (flags->is_zero && flags->precision == 0 && !flags->is_minus)
-	{
-		flags->precision = flags->width;
-		flags->width = 0;
-	}
-	if (flags->conversion == 'd' && (*str)[0] == '-' && flags->is_dot)
-		num_len--;
-	if (num_len < flags->precision && flags->conversion != 's' && !((flags->is_sharp && flags->conversion == 'x') || (flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p'))
-		fills.zero_fill_num = flags->precision - num_len;
-	else if (str_len < flags->precision)
-		fills.zero_fill_num = flags->precision - str_len;
-	if (((flags->is_sharp && flags->conversion == 'x') || (flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p') && flags->width > 0 && flags->is_dot && flags->precision > num_len)
-		fills.zero_fill_num = flags->precision - num_len;
-	if (flags->conversion == 's' && flags->is_dot)
-		fills.zero_fill_num = 0;
-	if (str_len < flags->width && flags->width >= flags->precision)
-		fills.space_fill_num = flags->width - (fills.zero_fill_num + str_len) - (fills.space_flag_fill + fills.plus_fill);
 	if (flags->is_minus == false)
 		ft_fill_c(fills.space_fill_num, ' ');
 	if (flags->conversion == 'd' && (*str)[0] == '-')
