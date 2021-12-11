@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/12 02:38:09 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/12 02:58:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,22 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 		fills->space_fill_num = flags->width - (fills->zero_fill_num + str_len) - (fills->space_flag_fill + fills->plus_fill);
 }
 
+size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *str, size_t str_len, size_t num_len)
+{
+	if (flags->is_minus == false)
+		ft_fill_c(fills->space_fill_num, ' ');
+	ft_fill_c(fills->minus_fill, '-');
+	ft_fill_c(fills->space_flag_fill, ' ');
+	ft_fill_c(fills->plus_fill, '+');
+	if (flags->conversion != 'd')
+		str_len = ft_put_suffix(flags, str, num_len);
+	ft_fill_c(fills->zero_fill_num, '0');
+	ft_putstr(str);
+	if (flags->is_minus == true)
+		ft_fill_c(fills->space_fill_num, ' ');
+	return (str_len + fills->space_fill_num + fills->zero_fill_num + fills->space_flag_fill + fills->plus_fill + fills->minus_fill);
+}
+
 size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 {
 	size_t	str_len;
@@ -126,8 +142,6 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 	ft_calc_fill(flags, &fills, str, str_len, num_len);
 	if (ft_is_zero_precision(flags, *str, str_len))
 		return (ft_put_suffix(flags, *str, write_len));
-	if (flags->is_minus == false)
-		ft_fill_c(fills.space_fill_num, ' ');
 	if (flags->conversion == 'd' && (*str)[0] == '-')
 	{
 		fills.minus_fill++;
@@ -136,16 +150,7 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 		if (*str == NULL)
 			return (ERROR);
 	}
-	ft_fill_c(fills.minus_fill, '-');
-	ft_fill_c(fills.space_flag_fill, ' ');
-	ft_fill_c(fills.plus_fill, '+');
-	if (flags->conversion != 'd')
-		str_len = ft_put_suffix(flags, *str, num_len);
-	ft_fill_c(fills.zero_fill_num, '0');
-	ft_putstr(*str);
-	if (flags->is_minus == true)
-		ft_fill_c(fills.space_fill_num, ' ');
-	write_len += str_len + fills.space_fill_num + fills.zero_fill_num + fills.space_flag_fill + fills.plus_fill + fills.minus_fill;
+	write_len += ft_print_with_fill(flags, &fills, *str, str_len, num_len);
 	return (write_len);
 }
 
