@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 21:37:24 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 21:45:36 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,11 +249,9 @@ size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 	size_t	init_i;
 
 	init_i = i;
-	while (format[i] != '\0')
+	while (format[i] != '\0' && !ft_is_conversion(format, i, flags))
 	{
-		if (ft_is_conversion(format, i, flags))
-			break ;
-		else if (format[i] == '-')
+		if (format[i] == '-')
 			flags->is_minus = true;
 		else if (format[i] == '0' && i == init_i)
 			flags->is_zero = true;
@@ -265,9 +263,9 @@ size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 			flags->is_space = true;
 		else if (format[i] == '+')
 			flags->is_plus = true;
-		else if (ft_isdigit(format[i]) && flags->is_dot == false)
+		else if (ft_isdigit(format[i]) && !flags->is_dot)
 			flags->width = flags->width * 10 + format[i] - '0';
-		else if (ft_isdigit(format[i]) && flags->is_dot == true)
+		else if (ft_isdigit(format[i]) && flags->is_dot)
 			flags->precision = flags->precision * 10 + format[i] - '0';
 		i++;
 	}
