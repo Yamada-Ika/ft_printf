@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/15 02:11:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 02:27:27 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 	}
 	if (flags->conv == 'd' && (*str)[0] == '-' && flags->is_dot)
 		num_len--;
-	if (num_len < flags->prec && flags->conv != 's' && !ft_is_print_prefix(flags))
+	if (num_len < flags->prec && flags->conv != 's' && !((flags->is_sharp && flags->conv == 'x') || (flags->is_sharp && flags->conv == 'X')))
 		fills->zero_fill_num = flags->prec - num_len;
 	else if (str_len < flags->prec)
 		fills->zero_fill_num = flags->prec - str_len;
@@ -116,7 +116,7 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 		fills->zero_fill_num = flags->prec - num_len;
 	if (flags->conv == 's' && flags->is_dot)
 		fills->zero_fill_num = 0;
-	if (str_len < flags->width && flags->width >= flags->prec)
+	if (str_len + fills->zero_fill_num < flags->width)
 		fills->space_fill_num = flags->width - (fills->zero_fill_num + str_len) - (fills->space_flag_fill + fills->plus_fill);
 }
 
