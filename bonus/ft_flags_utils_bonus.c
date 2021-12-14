@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 22:18:07 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 22:24:01 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ bool	ft_is_zero_prec(t_flag_manager *flags, char *str, size_t str_len)
 
 size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 {
-	size_t	str_len;
-	size_t	num_len;
+	size_t			str_len;
+	size_t			num_len;
 	t_fill_manager	fills;
 
 	str_len = ft_strlen_s(*str);
@@ -162,7 +162,7 @@ size_t	ft_printf_c_with_flags(t_flag_manager *flags, size_t write_len, int c)
 	space_fill = 0;
 	zero_fill = 0;
 	if (flags->is_minus)
-		write_len += ft_fill_c(CHAR_NUM, c);
+		write_len += ft_fill_c(c, CHAR_NUM);
 	if (flags->width > 0)
 	{
 		if (flags->is_zero && !flags->is_minus)
@@ -171,16 +171,16 @@ size_t	ft_printf_c_with_flags(t_flag_manager *flags, size_t write_len, int c)
 			space_fill = flags->width - CHAR_NUM;
 	}
 	if (flags->is_zero && !flags->is_minus)
-		ft_fill_c(zero_fill, '0');
-	ft_fill_c(space_fill, ' ');
+		ft_fill_c('0', zero_fill);
+	ft_fill_c(' ', space_fill);
 	if (flags->is_zero && flags->is_minus)
-		ft_fill_c(zero_fill, '0');
+		ft_fill_c('0', zero_fill);
 	if (!flags->is_minus)
-		write_len += ft_fill_c(CHAR_NUM, c);
+		write_len += ft_fill_c(c, CHAR_NUM);
 	return (write_len + space_fill + zero_fill);
 }
 
-size_t	ft_fill_c(size_t fill_num, char c)
+size_t	ft_fill_c(char c, size_t fill_num)
 {
 	size_t	i;
 
@@ -206,7 +206,7 @@ void	ft_init_flag_manager(t_flag_manager *flags)
 	flags->prec = 0;
 }
 
-void	ft_set_conv(const char *format, size_t i, t_flag_manager *flags)
+void	ft_set_conversion(const char *format, size_t i, t_flag_manager *flags)
 {
 	if (format[i] == 'c')
 		flags->conv = 'c';
@@ -226,13 +226,13 @@ void	ft_set_conv(const char *format, size_t i, t_flag_manager *flags)
 		flags->conv = '%';
 }
 
-bool	ft_is_conv(const char *format, size_t i, t_flag_manager *flags)
+bool	ft_is_conversion(const char *format, size_t i, t_flag_manager *flags)
 {
 	if (format[i] == 'c' || format[i] == 's' || format[i] == 'p' \
 		|| format[i] == 'd' || format[i] == 'i' || format[i] == 'u' \
 		|| format[i] == 'x' || format[i] == 'X' || format[i] == '%')
 	{
-		ft_set_conv(format, i, flags);
+		ft_set_conversion(format, i, flags);
 		return (true);
 	}
 	return (false);
@@ -244,7 +244,7 @@ size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 	size_t	init_i;
 
 	init_i = i;
-	while (format[i] != '\0' && !ft_is_conv(format, i, flags))
+	while (format[i] != '\0' && !ft_is_conversion(format, i, flags))
 	{
 		if (format[i] == '-')
 			flags->is_minus = true;

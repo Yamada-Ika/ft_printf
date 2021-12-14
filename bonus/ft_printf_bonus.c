@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 22:13:51 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 22:22:32 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	ft_printf_helper(const char *format, va_list *ap)
 				write_len, &flags);
 		}
 		else
-			write_len += ft_fill_c(CHAR_NUM, format[i]);
+			write_len += ft_fill_c(format[i], CHAR_NUM);
 		if (write_len >= INT_MAX)
 			return (ERROR_STATUS);
 		i++;
