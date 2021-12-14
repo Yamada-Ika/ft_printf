@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/12 03:40:24 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 21:00:43 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,34 +238,35 @@ void	ft_set_conversion(const char *format, size_t i, t_flag_manager *flags)
 		flags->conversion = '%';
 }
 
-void	ft_get_flags(const char *format, size_t *i, t_flag_manager *flags)
+size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 {
 	size_t	init_i;
 
-	init_i = *i;
-	while (format[*i] != '\0')
+	init_i = i;
+	while (format[i] != '\0')
 	{
-		if (ft_is_conversion(format, *i))
+		if (ft_is_conversion(format, i))
 		{
-			ft_set_conversion(format, *i, flags);
-			return ;
+			ft_set_conversion(format, i, flags);
+			break ;
 		}
-		else if (format[*i] == '-')
+		else if (format[i] == '-')
 			flags->is_minus = true;
-		else if (format[*i] == '0' && *i == init_i)
+		else if (format[i] == '0' && i == init_i)
 			flags->is_zero = true;
-		else if (format[*i] == '.')
+		else if (format[i] == '.')
 			flags->is_dot = true;
-		else if (format[*i] == '#')
+		else if (format[i] == '#')
 			flags->is_sharp = true;
-		else if (format[*i] == ' ')
+		else if (format[i] == ' ')
 			flags->is_space = true;
-		else if (format[*i] == '+')
+		else if (format[i] == '+')
 			flags->is_plus = true;
-		else if (ft_isdigit(format[*i]) && flags->is_dot == false)
-			flags->width = flags->width * 10 + format[*i] - '0';
-		else if (ft_isdigit(format[*i]) && flags->is_dot == true)
-			flags->precision = flags->precision * 10 + format[*i] - '0';
-		(*i)++;
+		else if (ft_isdigit(format[i]) && flags->is_dot == false)
+			flags->width = flags->width * 10 + format[i] - '0';
+		else if (ft_isdigit(format[i]) && flags->is_dot == true)
+			flags->precision = flags->precision * 10 + format[i] - '0';
+		i++;
 	}
+	return (i);
 }
