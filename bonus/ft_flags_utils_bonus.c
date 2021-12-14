@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 21:45:36 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 22:16:59 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 
 	if (flags->is_dot == false)
 		return (str);
-	if (flags->precision < str_len)
+	if (flags->prec < str_len)
 	{
-		cut_off_len = str_len - flags->precision;
+		cut_off_len = str_len - flags->prec;
 		i = 0;
 		while (i < cut_off_len)
 		{
@@ -34,14 +34,14 @@ char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 
 size_t	ft_put_prefix(t_flag_manager *flags, char *str, size_t str_len)
 {
-	if (str[0] == '0' && flags->conversion != 'p')
+	if (str[0] == '0' && flags->conv != 'p')
 		return (str_len);
-	if ((flags->is_sharp && flags->conversion == 'x') || flags->conversion == 'p')
+	if ((flags->is_sharp && flags->conv == 'x') || flags->conv == 'p')
 	{
 		ft_putstr("0x");
 		str_len += 2;
 	}
-	if (flags->is_sharp && flags->conversion == 'X')
+	if (flags->is_sharp && flags->conv == 'X')
 	{
 		ft_putstr("0X");
 		str_len += 2;
@@ -78,8 +78,8 @@ void	ft_init_fill_manager(t_fill_manager *fills)
 
 bool	ft_is_print_prefix(t_flag_manager *flags)
 {
-	return (((flags->is_sharp && flags->conversion == 'x') || \
-		(flags->is_sharp && flags->conversion == 'X') || flags->conversion == 'p'));
+	return (((flags->is_sharp && flags->conv == 'x') || \
+		(flags->is_sharp && flags->conv == 'X') || flags->conv == 'p'));
 }
 
 void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t str_len, size_t num_len)
@@ -87,26 +87,26 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 	if (ft_is_print_prefix(flags))
 		str_len += 2;
 	ft_init_fill_manager(fills);
-	if (flags->is_space && (*str)[0] != '-' && flags->conversion == 'd')
+	if (flags->is_space && (*str)[0] != '-' && flags->conv == 'd')
 		fills->space_flag_fill++;
-	if (flags->is_plus && (*str)[0] != '-' && flags->conversion == 'd')
+	if (flags->is_plus && (*str)[0] != '-' && flags->conv == 'd')
 		fills->plus_fill++;
-	if (flags->is_zero && flags->precision == 0 && !flags->is_minus)
+	if (flags->is_zero && flags->prec == 0 && !flags->is_minus)
 	{
-		flags->precision = flags->width;
+		flags->prec = flags->width;
 		flags->width = 0;
 	}
-	if (flags->conversion == 'd' && (*str)[0] == '-' && flags->is_dot)
+	if (flags->conv == 'd' && (*str)[0] == '-' && flags->is_dot)
 		num_len--;
-	if (num_len < flags->precision && flags->conversion != 's' && !ft_is_print_prefix(flags))
-		fills->zero_fill_num = flags->precision - num_len;
-	else if (str_len < flags->precision)
-		fills->zero_fill_num = flags->precision - str_len;
-	if (ft_is_print_prefix(flags) && flags->width > 0 && flags->is_dot && flags->precision > num_len)
-		fills->zero_fill_num = flags->precision - num_len;
-	if (flags->conversion == 's' && flags->is_dot)
+	if (num_len < flags->prec && flags->conv != 's' && !ft_is_print_prefix(flags))
+		fills->zero_fill_num = flags->prec - num_len;
+	else if (str_len < flags->prec)
+		fills->zero_fill_num = flags->prec - str_len;
+	if (ft_is_print_prefix(flags) && flags->width > 0 && flags->is_dot && flags->prec > num_len)
+		fills->zero_fill_num = flags->prec - num_len;
+	if (flags->conv == 's' && flags->is_dot)
 		fills->zero_fill_num = 0;
-	if (str_len < flags->width && flags->width >= flags->precision)
+	if (str_len < flags->width && flags->width >= flags->prec)
 		fills->space_fill_num = flags->width - (fills->zero_fill_num + str_len) - (fills->space_flag_fill + fills->plus_fill);
 }
 
@@ -117,7 +117,7 @@ size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *st
 	ft_fill_c(fills->minus_fill, '-');
 	ft_fill_c(fills->space_flag_fill, ' ');
 	ft_fill_c(fills->plus_fill, '+');
-	if (flags->conversion != 'd')
+	if (flags->conv != 'd')
 		str_len = ft_put_prefix(flags, str, num_len);
 	ft_fill_c(fills->zero_fill_num, '0');
 	ft_putstr(str);
@@ -126,9 +126,9 @@ size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *st
 	return (str_len + fills->space_fill_num + fills->zero_fill_num + fills->space_flag_fill + fills->plus_fill + fills->minus_fill);
 }
 
-bool	ft_is_zero_precision(t_flag_manager *flags, char *str, size_t str_len)
+bool	ft_is_zero_prec(t_flag_manager *flags, char *str, size_t str_len)
 {
-	return (str_len == 1 && str[0] == '0' && flags->is_dot && flags->precision == 0);
+	return (str_len == 1 && str[0] == '0' && flags->is_dot && flags->prec == 0);
 }
 
 size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
@@ -139,10 +139,10 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 
 	str_len = ft_strlen_s(*str);
 	num_len = str_len;
-	if (ft_is_zero_precision(flags, *str, str_len))
+	if (ft_is_zero_prec(flags, *str, str_len))
 		return (ft_put_prefix(flags, *str, write_len));
 	ft_calc_fill(flags, &fills, str, str_len, num_len);
-	if (flags->conversion == 'd' && (*str)[0] == '-')
+	if (flags->conv == 'd' && (*str)[0] == '-')
 	{
 		fills.minus_fill++;
 		str_len--;
@@ -161,32 +161,26 @@ size_t	ft_printf_c_with_flags(t_flag_manager *flags, size_t write_len, int c)
 
 	space_fill = 0;
 	zero_fill = 0;
-	if (flags->is_minus == true)
-	{
-		ft_putchar(c);
-		write_len++;
-	}
+	if (flags->is_minus)
+		write_len += ft_fill_c(CHAR_NUM, c);
 	if (flags->width > 0)
 	{
 		if (flags->is_zero && !flags->is_minus)
-			zero_fill = flags->width - 1;
+			zero_fill = flags->width - CHAR_NUM;
 		else
-			space_fill = flags->width - 1;
+			space_fill = flags->width - CHAR_NUM;
 	}
 	if (flags->is_zero && !flags->is_minus)
 		ft_fill_c(zero_fill, '0');
 	ft_fill_c(space_fill, ' ');
 	if (flags->is_zero && flags->is_minus)
 		ft_fill_c(zero_fill, '0');
-	if (flags->is_minus == false)
-	{
-		ft_putchar(c);
-		write_len++;
-	}
+	if (!flags->is_minus)
+		write_len += ft_fill_c(CHAR_NUM, c);
 	return (write_len + space_fill + zero_fill);
 }
 
-void	ft_fill_c(size_t fill_num, char c)
+size_t	ft_fill_c(size_t fill_num, char c)
 {
 	size_t	i;
 
@@ -196,6 +190,7 @@ void	ft_fill_c(size_t fill_num, char c)
 		ft_putchar(c);
 		i++;
 	}
+	return (i);
 }
 
 void	ft_init_flag_manager(t_flag_manager *flags)
@@ -206,38 +201,38 @@ void	ft_init_flag_manager(t_flag_manager *flags)
 	flags->is_sharp = false;
 	flags->is_space = false;
 	flags->is_plus = false;
-	flags->conversion = '\0';
+	flags->conv = '\0';
 	flags->width = 0;
-	flags->precision = 0;
+	flags->prec = 0;
 }
 
-void	ft_set_conversion(const char *format, size_t i, t_flag_manager *flags)
+void	ft_set_conv(const char *format, size_t i, t_flag_manager *flags)
 {
 	if (format[i] == 'c')
-		flags->conversion = 'c';
+		flags->conv = 'c';
 	else if (format[i] == 's')
-		flags->conversion = 's';
+		flags->conv = 's';
 	else if (format[i] == 'p')
-		flags->conversion = 'p';
+		flags->conv = 'p';
 	else if (format[i] == 'd' || format[i] == 'i')
-		flags->conversion = 'd';
+		flags->conv = 'd';
 	else if (format[i] == 'u')
-		flags->conversion = 'u';
+		flags->conv = 'u';
 	else if (format[i] == 'x')
-		flags->conversion = 'x';
+		flags->conv = 'x';
 	else if (format[i] == 'X')
-		flags->conversion = 'X';
+		flags->conv = 'X';
 	else if (format[i] == '%')
-		flags->conversion = '%';
+		flags->conv = '%';
 }
 
-bool	ft_is_conversion(const char *format, size_t i, t_flag_manager *flags)
+bool	ft_is_conv(const char *format, size_t i, t_flag_manager *flags)
 {
 	if (format[i] == 'c' || format[i] == 's' || format[i] == 'p' \
 		|| format[i] == 'd' || format[i] == 'i' || format[i] == 'u' \
 		|| format[i] == 'x' || format[i] == 'X' || format[i] == '%')
 	{
-		ft_set_conversion(format, i, flags);
+		ft_set_conv(format, i, flags);
 		return (true);
 	}
 	return (false);
@@ -249,7 +244,7 @@ size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 	size_t	init_i;
 
 	init_i = i;
-	while (format[i] != '\0' && !ft_is_conversion(format, i, flags))
+	while (format[i] != '\0' && !ft_is_conv(format, i, flags))
 	{
 		if (format[i] == '-')
 			flags->is_minus = true;
@@ -266,7 +261,7 @@ size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 		else if (ft_isdigit(format[i]) && !flags->is_dot)
 			flags->width = flags->width * 10 + format[i] - '0';
 		else if (ft_isdigit(format[i]) && flags->is_dot)
-			flags->precision = flags->precision * 10 + format[i] - '0';
+			flags->prec = flags->prec * 10 + format[i] - '0';
 		i++;
 	}
 	return (i);
