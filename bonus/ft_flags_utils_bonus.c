@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 21:00:43 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 21:37:24 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 	return (write_len);
 }
 
-size_t	ft_print_fill(t_flag_manager *flags, size_t write_len, int c)
+size_t	ft_printf_c_with_flags(t_flag_manager *flags, size_t write_len, int c)
 {
 	size_t	space_fill;
 	size_t	zero_fill;
@@ -211,13 +211,6 @@ void	ft_init_flag_manager(t_flag_manager *flags)
 	flags->precision = 0;
 }
 
-bool	ft_is_conversion(const char *format, size_t i)
-{
-	return (format[i] == 'c' || format[i] == 's' || format[i] == 'p' \
-		|| format[i] == 'd' || format[i] == 'i' || format[i] == 'u' \
-		|| format[i] == 'x' || format[i] == 'X' || format[i] == '%');
-}
-
 void	ft_set_conversion(const char *format, size_t i, t_flag_manager *flags)
 {
 	if (format[i] == 'c')
@@ -238,6 +231,19 @@ void	ft_set_conversion(const char *format, size_t i, t_flag_manager *flags)
 		flags->conversion = '%';
 }
 
+bool	ft_is_conversion(const char *format, size_t i, t_flag_manager *flags)
+{
+	if (format[i] == 'c' || format[i] == 's' || format[i] == 'p' \
+		|| format[i] == 'd' || format[i] == 'i' || format[i] == 'u' \
+		|| format[i] == 'x' || format[i] == 'X' || format[i] == '%')
+	{
+		ft_set_conversion(format, i, flags);
+		return (true);
+	}
+	return (false);
+
+}
+
 size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 {
 	size_t	init_i;
@@ -245,11 +251,8 @@ size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags)
 	init_i = i;
 	while (format[i] != '\0')
 	{
-		if (ft_is_conversion(format, i))
-		{
-			ft_set_conversion(format, i, flags);
+		if (ft_is_conversion(format, i, flags))
 			break ;
-		}
 		else if (format[i] == '-')
 			flags->is_minus = true;
 		else if (format[i] == '0' && i == init_i)
