@@ -8,8 +8,8 @@
 	int res_ft_printf = ft_printf(args);	\
 	int res_printf = printf(args);			\
 	fflush(stdout);							\
-	printf("ft  : %d\n", res_ft_printf);	\
-	printf("lib : %d\n", res_printf);		\
+	printf("ft_printf  : %d\n", res_ft_printf);	\
+	printf("printf     : %d\n", res_printf);		\
 }
 
 // #define TEST(args...)				\
@@ -1022,6 +1022,23 @@ int main(void) {
 
 	#ifdef ALL_MIX
 	TEST("[%04c][%10.5s][%5.5p][%+10.9d][%+u][%#12.1x][% X][%%]\n", 'a', "hello", 100000, INT_MAX, -1, -1, -900);
+	#endif
+
+	#ifdef COMPLEX
+	// If a precision is given with a numeric conversion (d, i, o, u, i, x, and X), the 0 flag is ignored.
+	// d
+	printf("-------- d --------\n");
+	TEST("[%%00.0d] : [%00.0d]\n", 0);
+	TEST("[%%00.1d] : [%00.1d]\n", 0);
+	TEST("[%%00.2d] : [%00.2d]\n", 0);
+	TEST("[%%00.3d] : [%00.3d]\n", 0);
+	TEST("[%%00.4d] : [%00.4d]\n", 0);
+	TEST("[%%01.0d] : [%01.0d]\n", 0);
+	TEST("[%%02.1d] : [%02.1d]\n", 0);
+	TEST("[%%03.2d] : [%03.2d]\n", 0);
+	TEST("[%%04.3d] : [%04.3d]\n", 0);
+	TEST("[%%05.4d] : [%05.4d]\n", 0);
+	printf("-------- d --------\n");
 	#endif
 	// sleep(30);
 	// system("leaks ./a.out");

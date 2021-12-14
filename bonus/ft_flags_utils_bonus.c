@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/15 00:18:02 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 00:54:00 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,11 @@ bool	ft_is_print_prefix(t_flag_manager *flags)
 		(flags->is_sharp && flags->conv == 'X') || flags->conv == 'p'));
 }
 
-void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t str_len, size_t num_len)
+void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t str_len)
 {
+	size_t	num_len;
+
+	num_len = str_len;
 	if (ft_is_print_prefix(flags))
 		str_len += 2;
 	ft_init_fill_manager(fills);
@@ -141,7 +144,7 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 	num_len = str_len;
 	if (ft_is_zero_prec(flags, *str, str_len))
 		return (ft_put_prefix(flags, *str, write_len));
-	ft_calc_fill(flags, &fills, str, str_len, num_len);
+	ft_calc_fill(flags, &fills, str, str_len);
 	if (flags->conv == 'd' && (*str)[0] == '-')
 	{
 		fills.minus_fill++;
@@ -156,28 +159,26 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 
 size_t	ft_printf_c_with_flags(t_flag_manager *flags, size_t write_len, int c)
 {
-	size_t	space_fill;
-	size_t	zero_fill;
+	t_fill_manager	fills;
 
-	space_fill = 0;
-	zero_fill = 0;
+	ft_init_fill_manager(&fills);
 	if (flags->is_minus)
 		write_len += ft_fill_c(c, CHAR_NUM);
 	if (flags->width > 0)
 	{
 		if (flags->is_zero && !flags->is_minus)
-			zero_fill = flags->width - CHAR_NUM;
+			fills.zero_fill_num = flags->width - CHAR_NUM;
 		else
-			space_fill = flags->width - CHAR_NUM;
+			fills.space_fill_num = flags->width - CHAR_NUM;
 	}
 	if (flags->is_zero && !flags->is_minus)
-		ft_fill_c('0', zero_fill);
-	ft_fill_c(' ', space_fill);
+		ft_fill_c('0', fills.zero_fill_num);
+	ft_fill_c(' ', fills.space_fill_num);
 	if (flags->is_zero && flags->is_minus)
-		ft_fill_c('0', zero_fill);
+		ft_fill_c('0', fills.zero_fill_num);
 	if (!flags->is_minus)
 		write_len += ft_fill_c(c, CHAR_NUM);
-	return (write_len + space_fill + zero_fill);
+	return (write_len + fills.space_fill_num + fills.zero_fill_num);
 }
 
 size_t	ft_fill_c(char c, size_t fill_num)
