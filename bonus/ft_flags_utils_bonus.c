@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/15 00:54:00 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 02:11:32 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,14 @@ char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 size_t	ft_put_prefix(t_flag_manager *flags, char *str, size_t str_len)
 {
 	if (str[0] == '0' && flags->conv != 'p')
+	{
+		if (flags->width > 0 && flags->prec == 0)
+		{
+			ft_fill_c(' ', flags->width);
+			str_len += 1;
+		}
 		return (str_len);
+	}
 	if ((flags->is_sharp && flags->conv == 'x') || flags->conv == 'p')
 	{
 		ft_putstr("0x");
@@ -120,7 +127,7 @@ size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *st
 	ft_fill_c('-', fills->minus_fill);
 	ft_fill_c(' ', fills->space_flag_fill);
 	ft_fill_c('+', fills->plus_fill);
-	if (flags->conv != 'd')
+	if (flags->conv == 'x' || flags->conv == 'X' || flags->conv == 'p')
 		str_len = ft_put_prefix(flags, str, num_len);
 	ft_fill_c('0', fills->zero_fill_num);
 	ft_putstr(str);
@@ -227,6 +234,22 @@ void	ft_set_conversion(const char *format, size_t i, t_flag_manager *flags)
 		flags->conv = '%';
 }
 
+bool	ft_is_numeric_conversion(t_flag_manager *flags)
+{
+	return (flags->conv == 'd' || flags->conv == 'i' || flags->conv == 'u' \
+		|| flags->conv == 'x' || flags->conv == 'X');
+}
+
+void	ft_consider_flags_priority(t_flag_manager *flags)
+{
+	if (ft_is_numeric_conversion(flags) && flags->is_dot && flags->is_zero)
+		flags->is_zero = false;
+	if (flags->is_minus && flags->is_zero)
+		flags->is_zero = false;
+	if (flags->is_plus && flags->is_space)
+		flags->is_space = false;
+}
+
 bool	ft_is_conversion(const char *format, size_t i, t_flag_manager *flags)
 {
 	if (format[i] == 'c' || format[i] == 's' || format[i] == 'p' \
@@ -234,6 +257,7 @@ bool	ft_is_conversion(const char *format, size_t i, t_flag_manager *flags)
 		|| format[i] == 'x' || format[i] == 'X' || format[i] == '%')
 	{
 		ft_set_conversion(format, i, flags);
+		ft_consider_flags_priority(flags);
 		return (true);
 	}
 	return (false);
