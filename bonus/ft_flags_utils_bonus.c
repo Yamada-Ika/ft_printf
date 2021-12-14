@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 22:24:01 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 00:18:02 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,16 +113,16 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *str, size_t str_len, size_t num_len)
 {
 	if (!flags->is_minus)
-		ft_fill_c(fills->space_fill_num, ' ');
-	ft_fill_c(fills->minus_fill, '-');
-	ft_fill_c(fills->space_flag_fill, ' ');
-	ft_fill_c(fills->plus_fill, '+');
+		ft_fill_c(' ', fills->space_fill_num);
+	ft_fill_c('-', fills->minus_fill);
+	ft_fill_c(' ', fills->space_flag_fill);
+	ft_fill_c('+', fills->plus_fill);
 	if (flags->conv != 'd')
 		str_len = ft_put_prefix(flags, str, num_len);
-	ft_fill_c(fills->zero_fill_num, '0');
+	ft_fill_c('0', fills->zero_fill_num);
 	ft_putstr(str);
 	if (flags->is_minus)
-		ft_fill_c(fills->space_fill_num, ' ');
+		ft_fill_c(' ', fills->space_fill_num);
 	return (str_len + fills->space_fill_num + fills->zero_fill_num + fills->space_flag_fill + fills->plus_fill + fills->minus_fill);
 }
 
@@ -182,15 +182,15 @@ size_t	ft_printf_c_with_flags(t_flag_manager *flags, size_t write_len, int c)
 
 size_t	ft_fill_c(char c, size_t fill_num)
 {
-	size_t	i;
+	size_t	write_fill_len;
 
-	i = 0;
-	while (i < fill_num)
+	write_fill_len = 0;
+	while (write_fill_len < fill_num)
 	{
 		ft_putchar(c);
-		i++;
+		write_fill_len++;
 	}
-	return (i);
+	return (write_fill_len);
 }
 
 void	ft_init_flag_manager(t_flag_manager *flags)
