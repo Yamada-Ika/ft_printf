@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 22:16:59 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 22:18:07 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 	size_t	i;
 	size_t	cut_off_len;
 
-	if (flags->is_dot == false)
+	if (!flags->is_dot)
 		return (str);
 	if (flags->prec < str_len)
 	{
@@ -112,7 +112,7 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 
 size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *str, size_t str_len, size_t num_len)
 {
-	if (flags->is_minus == false)
+	if (!flags->is_minus)
 		ft_fill_c(fills->space_fill_num, ' ');
 	ft_fill_c(fills->minus_fill, '-');
 	ft_fill_c(fills->space_flag_fill, ' ');
@@ -121,7 +121,7 @@ size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *st
 		str_len = ft_put_prefix(flags, str, num_len);
 	ft_fill_c(fills->zero_fill_num, '0');
 	ft_putstr(str);
-	if (flags->is_minus == true)
+	if (flags->is_minus)
 		ft_fill_c(fills->space_fill_num, ' ');
 	return (str_len + fills->space_fill_num + fills->zero_fill_num + fills->space_flag_fill + fills->plus_fill + fills->minus_fill);
 }
