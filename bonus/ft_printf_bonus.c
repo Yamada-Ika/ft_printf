@@ -6,32 +6,30 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 20:57:33 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 22:13:51 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
 static size_t	ft_printf_converted_str(const char *format,
-	va_list *ap, size_t index, size_t write_len, t_flag_manager *flags)
+	va_list *ap, size_t write_len, t_flag_manager *flags)
 {
-	if (write_len < 0)
-		return (write_len);
-	if (format[index] == 'c')
+	if (*format == 'c')
 		write_len = ft_printf_c(ap, write_len, flags);
-	else if (format[index] == 's')
+	else if (*format == 's')
 		write_len = ft_printf_s(ap, write_len, flags);
-	else if (format[index] == 'p')
+	else if (*format == 'p')
 		write_len = ft_printf_p(ap, write_len, flags);
-	else if (format[index] == 'd' || format[index] == 'i')
+	else if (*format == 'd' || *format == 'i')
 		write_len = ft_printf_di(ap, write_len, flags);
-	else if (format[index] == 'u')
+	else if (*format == 'u')
 		write_len = ft_printf_u(ap, write_len, flags);
-	else if (format[index] == 'x')
+	else if (*format == 'x')
 		write_len = ft_printf_lower_x(ap, write_len, flags);
-	else if (format[index] == 'X')
+	else if (*format == 'X')
 		write_len = ft_printf_upper_x(ap, write_len, flags);
-	else if (format[index] == '%')
+	else if (*format == '%')
 		write_len = ft_printf_percent(write_len, flags);
 	return (write_len);
 }
@@ -42,23 +40,20 @@ static int	ft_printf_helper(const char *format, va_list *ap)
 	size_t			i;
 	t_flag_manager	flags;
 
-	ft_init_flag_manager(&flags);
 	write_len = 0;
 	i = 0;
 	while (format[i] != '\0')
 	{
 		if (format[i] == '%')
 		{
+			ft_init_flag_manager(&flags);
 			i++;
 			i = ft_get_flags(format, i, &flags);
-			write_len = ft_printf_converted_str(format, ap, i, write_len, &flags);
-			ft_init_flag_manager(&flags);
+			write_len = ft_printf_converted_str(&format[i], ap, \
+				write_len, &flags);
 		}
 		else
-		{
-			ft_putchar(format[i]);
-			write_len++;
-		}
+			write_len += ft_fill_c(CHAR_NUM, format[i]);
 		if (write_len >= INT_MAX)
 			return (ERROR_STATUS);
 		i++;
