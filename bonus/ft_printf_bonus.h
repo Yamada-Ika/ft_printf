@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:05:54 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 21:37:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/14 21:42:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ size_t	ft_printf_percent(size_t write_len, t_flag_manager *flags);
 
 size_t	ft_get_flags(const char *format, size_t i, t_flag_manager *flags);
 void	ft_init_flag_manager(t_flag_manager *flags);
-size_t	ft_print_fill(t_flag_manager *flags, size_t write_len, int c);
+size_t	ft_printf_c_with_flags(t_flag_manager *flags, size_t write_len, int c);
 void	ft_fill_c(size_t fill_num, char c);
-size_t	ft_printf_c_with_flags(t_flag_manager *flags, char **str, size_t write_len);
+size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len);
 size_t	ft_print_di_with_flags(t_flag_manager *flags, char *str, size_t write_len);
 char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags);
 
