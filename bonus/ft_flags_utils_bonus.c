@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/15 15:30:53 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 16:21:47 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,28 @@ bool	ft_is_print_prefix(t_flag_manager *flags)
 		(flags->is_sharp && flags->conv == 'X') || flags->conv == 'p'));
 }
 
+void	ft_swap_sizet(size_t *num_1, size_t *num_2)
+{
+	size_t	tmp;
+
+	tmp = *num_1;
+	*num_1 = *num_2;
+	*num_2 = tmp;
+}
+
+void	ft_calc_fill_helper(t_flag_manager *flags, t_fill_manager *fills, size_t str_len, size_t non_prefix_len)
+{
+	if (non_prefix_len < flags->prec && !(flags->conv == 's' && flags->is_dot))
+		fills->zero_fill_num = flags->prec - non_prefix_len;
+	if (str_len + fills->zero_fill_num < flags->width)
+		fills->space_fill_num = flags->width - (fills->zero_fill_num + str_len) - (fills->space_flag_fill + fills->plus_fill);
+	if (flags->is_zero && !flags->is_dot && flags->prec == 0)
+		ft_swap_sizet(&(fills->zero_fill_num), &(fills->space_fill_num));
+}
+
 void	ft_calc_fill_p(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
 {
 	size_t	hex_len;
-	size_t	tmp;
 
 	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
 	{
@@ -96,22 +114,12 @@ void	ft_calc_fill_p(t_flag_manager *flags, t_fill_manager *fills, char **str, si
 	}
 	hex_len = *str_len;
 	*str_len += PREFIX_LEN;
-	if (hex_len < flags->prec)
-		fills->zero_fill_num = flags->prec - hex_len;
-	if (*str_len + fills->zero_fill_num < flags->width)
-		fills->space_fill_num = flags->width - (fills->zero_fill_num + *str_len) - (fills->space_flag_fill + fills->plus_fill);
-	if (flags->is_zero && !flags->is_dot && flags->prec == 0)
-	{
-		tmp = fills->zero_fill_num;
-		fills->zero_fill_num = fills->space_fill_num;
-		fills->space_fill_num = tmp;
-	}
+	ft_calc_fill_helper(flags, fills, *str_len, hex_len);
 }
 
 void	ft_calc_fill_x(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
 {
 	size_t	hex_len;
-	size_t	tmp;
 
 	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
 	{
@@ -121,22 +129,12 @@ void	ft_calc_fill_x(t_flag_manager *flags, t_fill_manager *fills, char **str, si
 	hex_len = *str_len;
 	if (flags->is_sharp && (*str)[0] != '0')
 		*str_len += PREFIX_LEN;
-	if (hex_len < flags->prec)
-		fills->zero_fill_num = flags->prec - hex_len;
-	if (*str_len + fills->zero_fill_num < flags->width)
-		fills->space_fill_num = flags->width - (fills->zero_fill_num + *str_len) - (fills->space_flag_fill + fills->plus_fill);
-	if (flags->is_zero && !flags->is_dot && flags->prec == 0)
-	{
-		tmp = fills->zero_fill_num;
-		fills->zero_fill_num = fills->space_fill_num;
-		fills->space_fill_num = tmp;
-	}
+	ft_calc_fill_helper(flags, fills, *str_len, hex_len);
 }
 
 void	ft_calc_fill_di(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
 {
 	size_t	num_len;
-	size_t	tmp;
 
 	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
 	{
@@ -150,22 +148,12 @@ void	ft_calc_fill_di(t_flag_manager *flags, t_fill_manager *fills, char **str, s
 	num_len = *str_len;
 	if ((*str)[0] == '-' && flags->is_dot)
 		num_len--;
-	if (num_len < flags->prec)
-		fills->zero_fill_num = flags->prec - num_len;
-	if (*str_len + fills->zero_fill_num < flags->width)
-		fills->space_fill_num = flags->width - (fills->zero_fill_num + *str_len) - (fills->space_flag_fill + fills->plus_fill);
-	if (flags->is_zero && !flags->is_dot && flags->prec == 0)
-	{
-		tmp = fills->zero_fill_num;
-		fills->zero_fill_num = fills->space_fill_num;
-		fills->space_fill_num = tmp;
-	}
+	ft_calc_fill_helper(flags, fills, *str_len, num_len);
 }
 
 void	ft_calc_fill_u(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
 {
 	size_t	num_len;
-	size_t	tmp;
 
 	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
 	{
@@ -173,32 +161,12 @@ void	ft_calc_fill_u(t_flag_manager *flags, t_fill_manager *fills, char **str, si
 		(*str)[0] = '\0';
 	}
 	num_len = *str_len;
-	if (num_len < flags->prec)
-		fills->zero_fill_num = flags->prec - num_len;
-	if (*str_len + fills->zero_fill_num < flags->width)
-		fills->space_fill_num = flags->width - (fills->zero_fill_num + *str_len) - (fills->space_flag_fill + fills->plus_fill);
-	if (flags->is_zero && !flags->is_dot && flags->prec == 0)
-	{
-		tmp = fills->zero_fill_num;
-		fills->zero_fill_num = fills->space_fill_num;
-		fills->space_fill_num = tmp;
-	}
+	ft_calc_fill_helper(flags, fills, *str_len, num_len);
 }
 
 void	ft_calc_fill_s(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
 {
-	size_t	tmp;
-
-	if (*str_len < flags->prec && !flags->is_dot)
-		fills->zero_fill_num = flags->prec - *str_len;
-	if (*str_len + fills->zero_fill_num < flags->width)
-		fills->space_fill_num = flags->width - (fills->zero_fill_num + *str_len) - (fills->space_flag_fill + fills->plus_fill);
-	if (flags->is_zero && !flags->is_dot && flags->prec == 0)
-	{
-		tmp = fills->zero_fill_num;
-		fills->zero_fill_num = fills->space_fill_num;
-		fills->space_fill_num = tmp;
-	}
+	ft_calc_fill_helper(flags, fills, *str_len, *str_len);
 }
 
 void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
@@ -207,15 +175,15 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 
 	ft_init_fill_manager(fills);
 	if (flags->conv == 'p')
-		return (ft_calc_fill_p(flags, fills, str, str_len));
-	if (flags->conv == 'x' || flags->conv == 'X')
-		return (ft_calc_fill_x(flags, fills, str, str_len));
-	if (flags->conv == 'd')
-		return (ft_calc_fill_di(flags, fills, str, str_len));
-	if (flags->conv == 'u')
-		return (ft_calc_fill_u(flags, fills, str, str_len));
-	if (flags->conv == 's')
-		return (ft_calc_fill_s(flags, fills, str, str_len));
+		ft_calc_fill_p(flags, fills, str, str_len);
+	else if (flags->conv == 'x' || flags->conv == 'X')
+		ft_calc_fill_x(flags, fills, str, str_len);
+	else if (flags->conv == 'd')
+		ft_calc_fill_di(flags, fills, str, str_len);
+	else if (flags->conv == 'u')
+		ft_calc_fill_u(flags, fills, str, str_len);
+	else if (flags->conv == 's')
+		ft_calc_fill_s(flags, fills, str, str_len);
 }
 
 size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *str, size_t str_len, size_t num_len)
