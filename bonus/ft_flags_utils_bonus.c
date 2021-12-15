@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/15 16:50:00 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 18:08:48 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,14 @@ char	*ft_cut_off_str(char *str, size_t str_len, t_flag_manager *flags)
 	return (str);
 }
 
-size_t	ft_put_prefix(t_flag_manager *flags, char *str, size_t str_len)
+void	ft_put_prefix(t_flag_manager *flags, char *str)
 {
 	if (str[0] == '0' && flags->conv != 'p')
-		return (str_len);
+		return ;
 	if (flags->conv == 'p' || (flags->is_sharp && flags->conv == 'x'))
 		ft_putstr("0x");
 	if (flags->is_sharp && flags->conv == 'X')
 		ft_putstr("0X");
-	return (str_len + PREFIX_LEN);
 }
 
 long long	ft_abs(long long n)
@@ -70,12 +69,6 @@ void	ft_init_fill_manager(t_fill_manager *fills)
 	fills->minus_fill = 0;
 }
 
-bool	ft_is_print_prefix(t_flag_manager *flags)
-{
-	return (((flags->is_sharp && flags->conv == 'x') || \
-		(flags->is_sharp && flags->conv == 'X') || flags->conv == 'p'));
-}
-
 void	ft_swap_sizet(size_t *num_1, size_t *num_2)
 {
 	size_t	tmp;
@@ -95,7 +88,7 @@ void	ft_calc_fill_helper(t_flag_manager *flags, t_fill_manager *fills, size_t st
 		ft_swap_sizet(&(fills->zero_fill_num), &(fills->space_fill_num));
 }
 
-size_t	ft_calc_fill_p_prehelper(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
+size_t	ft_calc_fill_p_prehelper(t_flag_manager *flags, char **str, size_t *str_len)
 {
 	size_t	hex_len;
 
@@ -109,7 +102,7 @@ size_t	ft_calc_fill_p_prehelper(t_flag_manager *flags, t_fill_manager *fills, ch
 	return (hex_len);
 }
 
-size_t	ft_calc_fill_x_prehelper(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
+size_t	ft_calc_fill_x_prehelper(t_flag_manager *flags, char **str, size_t *str_len)
 {
 	size_t	hex_len;
 
@@ -143,7 +136,7 @@ size_t	ft_calc_fill_di_prehelper(t_flag_manager *flags, t_fill_manager *fills, c
 	return (unsigend_len);
 }
 
-size_t	ft_calc_fill_u_prehelper(t_flag_manager *flags, t_fill_manager *fills, char **str, size_t *str_len)
+size_t	ft_calc_fill_u_prehelper(t_flag_manager *flags, char **str, size_t *str_len)
 {
 	size_t	num_len;
 
@@ -162,26 +155,26 @@ void	ft_calc_fill(t_flag_manager *flags, t_fill_manager *fills, char **str, size
 
 	ft_init_fill_manager(fills);
 	if (flags->conv == 'p')
-		non_prefix_len = ft_calc_fill_p_prehelper(flags, fills, str, str_len);
+		non_prefix_len = ft_calc_fill_p_prehelper(flags, str, str_len);
 	else if (flags->conv == 'x' || flags->conv == 'X')
-		non_prefix_len = ft_calc_fill_x_prehelper(flags, fills, str, str_len);
+		non_prefix_len = ft_calc_fill_x_prehelper(flags, str, str_len);
 	else if (flags->conv == 'd')
 		non_prefix_len = ft_calc_fill_di_prehelper(flags, fills, str, str_len);
 	else if (flags->conv == 'u')
-		non_prefix_len = ft_calc_fill_u_prehelper(flags, fills, str, str_len);
-	else if (flags->conv == 's')
+		non_prefix_len = ft_calc_fill_u_prehelper(flags, str, str_len);
+	else
 		non_prefix_len = *str_len;
 	ft_calc_fill_helper(flags, fills, *str_len, non_prefix_len);
 }
 
-size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *str, size_t str_len, size_t num_len)
+size_t	ft_print_with_fill(t_flag_manager *flags, t_fill_manager *fills, char *str, size_t str_len)
 {
 	if (!flags->is_minus)
 		ft_fill_c(' ', fills->space_fill_num);
 	ft_fill_c('-', fills->minus_fill);
 	ft_fill_c(' ', fills->space_flag_fill);
 	ft_fill_c('+', fills->plus_fill);
-	ft_put_prefix(flags, str, str_len);
+	ft_put_prefix(flags, str);
 	ft_fill_c('0', fills->zero_fill_num);
 	ft_putstr(str);
 	if (flags->is_minus)
@@ -206,7 +199,7 @@ size_t	ft_print_with_flags(t_flag_manager *flags, char **str, size_t write_len)
 		if (*str == NULL)
 			return (ERROR);
 	}
-	write_len += ft_print_with_fill(flags, &fills, *str, str_len, num_len);
+	write_len += ft_print_with_fill(flags, &fills, *str, str_len);
 	return (write_len);
 }
 
@@ -260,23 +253,23 @@ void	ft_init_flag_manager(t_flag_manager *flags)
 	flags->prec = 0;
 }
 
-void	ft_set_conversion(const char *format, size_t i, t_flag_manager *flags)
+void	ft_set_conversion(const char *format, size_t index, t_flag_manager *flags)
 {
-	if (format[i] == 'c')
+	if (format[index] == 'c')
 		flags->conv = 'c';
-	else if (format[i] == 's')
+	else if (format[index] == 's')
 		flags->conv = 's';
-	else if (format[i] == 'p')
+	else if (format[index] == 'p')
 		flags->conv = 'p';
-	else if (format[i] == 'd' || format[i] == 'i')
+	else if (format[index] == 'd' || format[index] == 'i')
 		flags->conv = 'd';
-	else if (format[i] == 'u')
+	else if (format[index] == 'u')
 		flags->conv = 'u';
-	else if (format[i] == 'x')
+	else if (format[index] == 'x')
 		flags->conv = 'x';
-	else if (format[i] == 'X')
+	else if (format[index] == 'X')
 		flags->conv = 'X';
-	else if (format[i] == '%')
+	else if (format[index] == '%')
 		flags->conv = '%';
 }
 
@@ -296,18 +289,17 @@ void	ft_consider_flags_priority(t_flag_manager *flags)
 		flags->is_space = false;
 }
 
-bool	ft_is_conversion(const char *format, size_t i, t_flag_manager *flags)
+bool	ft_is_conversion(const char *format, size_t index, t_flag_manager *flags)
 {
-	if (format[i] == 'c' || format[i] == 's' || format[i] == 'p' \
-		|| format[i] == 'd' || format[i] == 'i' || format[i] == 'u' \
-		|| format[i] == 'x' || format[i] == 'X' || format[i] == '%')
+	if (format[index] == 'c' || format[index] == 's' || format[index] == 'p' \
+		|| format[index] == 'd' || format[index] == 'i' || format[index] == 'u' \
+		|| format[index] == 'x' || format[index] == 'X' || format[index] == '%')
 	{
-		ft_set_conversion(format, i, flags);
+		ft_set_conversion(format, index, flags);
 		ft_consider_flags_priority(flags);
 		return (true);
 	}
 	return (false);
-
 }
 
 size_t	ft_get_flags(const char *format, size_t index, t_flag_manager *flags)
@@ -319,7 +311,7 @@ size_t	ft_get_flags(const char *format, size_t index, t_flag_manager *flags)
 	{
 		if (format[index] == '-')
 			flags->is_minus = true;
-		else if (format[index] == '0' && i == init_i)
+		else if (format[index] == '0' && index == init_index)
 			flags->is_zero = true;
 		else if (format[index] == '.')
 			flags->is_dot = true;

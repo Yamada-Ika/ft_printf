@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:04:55 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/15 02:48:20 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 17:48:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@ size_t	ft_printf_s(va_list *ap, size_t write_len, t_flag_manager *flags)
 
 	str = va_arg(*ap, char *);
 	if (str == NULL)
-	{
-		str = ft_strdup("(null)");
-		if (str == NULL)
-			return (ERROR);
-	}
+		str = "(null)";
 	heap_str = ft_strdup(str);
 	if (heap_str == NULL)
 		return (ERROR);
