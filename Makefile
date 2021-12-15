@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -c -Wall -Wextra -Werror
+CFLAGS		:= -c #-Wall -Wextra -Werror
 LIBFT_DIR	:= libft
 LIBFT_A		:= libft.a
 LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))

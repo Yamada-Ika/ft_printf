@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:05:54 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 22:23:08 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 10:36:19 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define ERROR_STATUS -1
 # define ERROR SIZE_T_MAX
 # define CHAR_NUM 1
+# define PREFIX_LEN 2
 
 typedef struct s_flag_manager
 {
