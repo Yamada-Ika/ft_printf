@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/14 22:22:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/15 16:50:32 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ static int	ft_printf_helper(const char *format, va_list *ap)
 		if (format[i] == '%')
 		{
 			ft_init_flag_manager(&flags);
-			i++;
-			i = ft_get_flags(format, i, &flags);
+			i = ft_get_flags(format, ++i, &flags);
 			write_len = ft_printf_converted_str(&format[i], ap, \
 				write_len, &flags);
 		}
