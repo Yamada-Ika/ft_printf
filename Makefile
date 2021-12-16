@@ -17,10 +17,9 @@ OBJS		:= $(SRCS:.c=.o)
 ifdef WITH_BONUS
 PRINTF_DIR	:= bonus
 SRCS		:= \
-ft_flags_utils_bonus.c    ft_printf_lower_x_bonus.c ft_printf_u_bonus.c			\
-ft_printf_bonus.c         ft_printf_p_bonus.c       ft_printf_upper_x_bonus.c	\
-ft_printf_c_bonus.c       ft_printf_percent_bonus.c								\
-ft_printf_di_bonus.c      ft_printf_s_bonus.c
+ft_conversion_cspdiu.c       ft_fills_c_bonus.c           ft_fills_utils_bonus.c	\
+ft_conversion_upxlwxper.c    ft_fills_calc_helper_bonus.c ft_flags_utils_bonus.c	\
+ft_conversion_utils.c        ft_fills_utils_2_bonus.c     ft_printf_bonus.c
 SRCS		:= $(addprefix $(PRINTF_DIR)/, $(SRCS))
 HEADER		:= ft_printf_bonus.h
 HEADER		:= $(addprefix $(PRINTF_DIR)/, $(HEADER))
