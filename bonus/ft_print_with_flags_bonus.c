@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:24:19 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 16:49:33 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/18 01:56:57 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,21 @@ void	ft_calc_fill(t_flags *flags, t_fills *fills, char **str, \
 	size_t	non_prefix_len;
 
 	ft_init_fills(fills);
-	if (flags->conv == 'p')
-		non_prefix_len = ft_calc_fill_p_helper(flags, str, str_len);
-	else if (flags->conv == 'x' || flags->conv == 'X')
-		non_prefix_len = ft_calc_fill_x_helper(flags, str, str_len);
-	else if (flags->conv == 'd')
-		non_prefix_len = ft_calc_fill_di_helper(flags, fills, str, str_len);
-	else if (flags->conv == 'u')
-		non_prefix_len = ft_calc_fill_u_helper(flags, str, str_len);
-	else
-		non_prefix_len = *str_len;
+	non_prefix_len = *str_len;
+	if (flags->conv != 's')
+	{
+		if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
+		{
+			(*str_len)--;
+			(*str)[0] = '\0';
+		}
+		if (flags->conv == 'p')
+			*str_len += PREFIX_LEN;
+		if (ft_strchr("xX", flags->conv) && flags->is_sharp && (*str)[0] != '0')
+			*str_len += PREFIX_LEN;
+		if (flags->conv == 'd')
+			non_prefix_len = ft_calc_fill_di_helper(flags, fills, str, str_len);
+	}
 	ft_calc_fill_helper(flags, fills, *str_len, non_prefix_len);
 	if (flags->conv == 'd' && (*str)[0] == '-')
 	{
