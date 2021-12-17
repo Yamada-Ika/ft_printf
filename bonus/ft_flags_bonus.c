@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_flags_utils_bonus.c                             :+:      :+:    :+:   */
+/*   ft_flags_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 00:21:42 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 01:42:13 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/17 18:37:06 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,8 @@ void	ft_set_conversion(const char *format, size_t index, t_flags *flags)
 
 void	ft_consider_flags_priority(t_flags *flags)
 {
-	if ((flags->conv == 'd' || flags->conv == 'i' || flags->conv == 'u' \
-		|| flags->conv == 'x' || flags->conv == 'X') && flags->is_dot \
-		&& flags->is_zero)
+	if (flags->conv != '\0' && ft_strchr("diuxX", flags->conv) \
+		&& flags->is_dot && flags->is_zero)
 		flags->is_zero = false;
 	if (flags->is_minus && flags->is_zero)
 		flags->is_zero = false;
@@ -59,9 +58,7 @@ void	ft_consider_flags_priority(t_flags *flags)
 
 bool	ft_is_conversion(const char *format, size_t index, t_flags *flags)
 {
-	if (format[index] == 'c' || format[index] == 's' || format[index] == 'p' \
-		|| format[index] == 'd' || format[index] == 'i' || format[index] == 'u' \
-		|| format[index] == 'x' || format[index] == 'X' || format[index] == '%')
+	if (format[index] != '\0' && ft_strchr("cspduixX%", format[index]))
 	{
 		ft_set_conversion(format, index, flags);
 		ft_consider_flags_priority(flags);

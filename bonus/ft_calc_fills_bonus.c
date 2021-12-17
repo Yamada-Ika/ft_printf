@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 01:22:09 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 13:47:29 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/17 19:05:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,45 +24,11 @@ void	ft_calc_fill_helper(t_flags *flags, t_fills *fills, size_t str_len, \
 		ft_swap_sizet(&(fills->zero_fill), &(fills->sp_fill));
 }
 
-size_t	ft_calc_fill_p_helper(t_flags *flags, char **str, size_t *str_len)
-{
-	size_t	hex_len;
-
-	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
-	{
-		(*str_len)--;
-		(*str)[0] = '\0';
-	}
-	hex_len = *str_len;
-	*str_len += PREFIX_LEN;
-	return (hex_len);
-}
-
-size_t	ft_calc_fill_x_helper(t_flags *flags, char **str, size_t *str_len)
-{
-	size_t	hex_len;
-
-	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
-	{
-		(*str_len)--;
-		(*str)[0] = '\0';
-	}
-	hex_len = *str_len;
-	if (flags->is_sharp && (*str)[0] != '0')
-		*str_len += PREFIX_LEN;
-	return (hex_len);
-}
-
 size_t	ft_calc_fill_di_helper(t_flags *flags, t_fills *fills, \
 	char **str, size_t *str_len)
 {
 	size_t	unsigend_len;
 
-	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
-	{
-		(*str_len)--;
-		(*str)[0] = '\0';
-	}
 	if (flags->is_space && (*str)[0] != '-')
 		fills->sp_flag_fill++;
 	if (flags->is_plus && (*str)[0] != '-')
@@ -71,17 +37,4 @@ size_t	ft_calc_fill_di_helper(t_flags *flags, t_fills *fills, \
 	if ((*str)[0] == '-' && flags->is_dot)
 		unsigend_len--;
 	return (unsigend_len);
-}
-
-size_t	ft_calc_fill_u_helper(t_flags *flags, char **str, size_t *str_len)
-{
-	size_t	num_len;
-
-	if ((*str)[0] == '0' && flags->is_dot && flags->prec == 0)
-	{
-		(*str_len)--;
-		(*str)[0] = '\0';
-	}
-	num_len = *str_len;
-	return (num_len);
 }
