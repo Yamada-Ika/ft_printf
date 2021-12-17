@@ -14,9 +14,16 @@
 
 // #define TEST(args...)				\
 // {									\
-// 	int res_printf = printf(args);		\
+// 	int res_printf = printf(args);	\
 // 	printf("%d\n", res_printf);		\
 // }
+
+// #define TEST(args...)				\
+// {									\
+// 	int res_ft_printf = ft_printf(args);		\
+// 	printf("%d\n", res_ft_printf);		\
+// }
+
 
 int main(void) {
 	// non-conversion
@@ -118,7 +125,7 @@ int main(void) {
 	str[size - 1] = '\0';
 	fflush(stdout);
 	printf("%d\n", printf("%s", str));
-	// printf("%d\n", ft_printf("%s", str));
+	printf("%d\n", ft_printf("%s", str));
 	#endif
 
 	// Over INT_MAX length
@@ -2074,7 +2081,32 @@ int main(void) {
 	TEST("[%%0-4.5p] : [%0-4.5p]\n", 19);
 	printf("-------- p --------\n");
 
+	// d
+	printf("-------- d --------\n");
+	TEST("[%% -10.0d] : [% -10.0d]\n", 0);
+	TEST("[%% -10.1d] : [% -10.1d]\n", -1);
+	TEST("[%% -10.2d] : [% -10.2d]\n", 123);
+	TEST("[%% -10.3d] : [% -10.3d]\n", -9032);
+	TEST("[%% -10.4d] : [% -10.4d]\n", INT_MAX);
+	TEST("[%%- 10.0d] : [%- 10.0d]\n", INT_MIN);
+	TEST("[%%- 10.1d] : [%- 10.1d]\n", LONG_MAX);
+	TEST("[%%- 10.2d] : [%- 10.2d]\n", LONG_MIN);
+	TEST("[%%- 10.3d] : [%- 10.3d]\n", ULONG_MAX);
+	TEST("[%%- 10.4d] : [%- 10.4d]\n", -100);
+	printf("-------- d --------\n");
+
 	// A + overrides a space if both are used.
+	#endif
+
+	#ifdef BIG
+	// d
+	printf("-------- d --------\n");
+	TEST("%2147483647d\n", 10);\
+	TEST("s%2147483647d\n", 10);
+	TEST("%2147483647ds\n", 10);
+	TEST("s%2147483646d\n", 10);
+	TEST("%2147483646ds\n", 10);
+	printf("-------- d --------\n");
 	#endif
 	// sleep(30);
 	// system("leaks ./a.out");

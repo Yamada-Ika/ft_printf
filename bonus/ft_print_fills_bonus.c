@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fills_utils_2_bonus.c                           :+:      :+:    :+:   */
+/*   ft_print_fills_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/15 18:27:17 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 01:54:29 by iyamada          ###   ########.fr       */
+/*   Created: 2021/12/17 02:22:20 by iyamada           #+#    #+#             */
+/*   Updated: 2021/12/17 02:33:26 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-long long	ft_abs(long long n)
+size_t	ft_fill_c(char c, size_t fill_num)
 {
-	if (n < 0)
-		n *= -1;
-	return (n);
-}
+	size_t	write_fill_len;
 
-void	ft_swap_sizet(size_t *num_1, size_t *num_2)
-{
-	size_t	tmp;
-
-	tmp = *num_1;
-	*num_1 = *num_2;
-	*num_2 = tmp;
+	write_fill_len = 0;
+	while (write_fill_len < fill_num)
+	{
+		ft_putchar(c);
+		write_fill_len++;
+	}
+	return (write_fill_len);
 }
 
 void	ft_put_prefix(t_flags *flags, char *str)
@@ -36,13 +33,4 @@ void	ft_put_prefix(t_flags *flags, char *str)
 		ft_putstr("0x");
 	if (flags->is_sharp && flags->conv == 'X')
 		ft_putstr("0X");
-}
-
-void	ft_init_fills(t_fills *fills)
-{
-	fills->sp_fill = 0;
-	fills->zero_fill = 0;
-	fills->sp_flag_fill = 0;
-	fills->plus_fill = 0;
-	fills->minus_fill = 0;
 }

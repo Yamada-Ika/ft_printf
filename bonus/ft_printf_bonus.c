@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:06:36 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 01:42:13 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/17 13:23:58 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static size_t	ft_printf_converted_str(const char *format,
 
 static int	ft_printf_helper(const char *format, va_list *ap)
 {
-	size_t			write_len;
-	size_t			i;
+	size_t	write_len;
+	size_t	i;
 	t_flags	flags;
 
 	write_len = 0;

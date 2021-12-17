@@ -1,8 +1,12 @@
 CC			:= gcc
 CFLAGS		:= -c -Wall -Wextra -Werror
+
+# libft
 LIBFT_DIR	:= libft
 LIBFT_A		:= libft.a
 LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
+
+# ft_printf mandatory
 NAME 		:= libftprintf.a
 PRINTF_DIR	:= mandatory
 HEADER		:= ft_printf.h
@@ -14,12 +18,15 @@ SRCS		:= $(addprefix $(PRINTF_DIR)/, $(SRCS))
 HEADER		:= $(addprefix $(PRINTF_DIR)/, $(HEADER))
 OBJS		:= $(SRCS:.c=.o)
 
+# ft_printf bonus
 ifdef WITH_BONUS
 PRINTF_DIR	:= bonus
 SRCS		:= \
-ft_conversion_cspdiu.c       ft_fills_c_bonus.c           ft_fills_utils_bonus.c	\
-ft_conversion_upxlwxper.c    ft_fills_calc_helper_bonus.c ft_flags_utils_bonus.c	\
-ft_conversion_utils.c        ft_fills_utils_2_bonus.c     ft_printf_bonus.c
+ft_calc_fills_bonus.c         ft_flags_bonus.c				\
+ft_conv_cspdiu_bonus.c        ft_print_c_with_flags_bonus.c	\
+ft_conv_upxlwxper_bonus.c     ft_print_fills_bonus.c		\
+ft_conv_utils_bonus.c         ft_print_with_flags_bonus.c	\
+ft_fills_utils_bonus.c        ft_printf_bonus.c
 SRCS		:= $(addprefix $(PRINTF_DIR)/, $(SRCS))
 HEADER		:= ft_printf_bonus.h
 HEADER		:= $(addprefix $(PRINTF_DIR)/, $(HEADER))
@@ -44,7 +51,8 @@ bonus:
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm -rf $(OBJS)
+	rm -rf mandatory/*.o
+	rm -rf bonus/*.o
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean
