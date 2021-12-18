@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fills_utils_2_bonus.c                           :+:      :+:    :+:   */
+/*   ft_fills_utils_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:27:17 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 02:29:31 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/18 18:35:45 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_cut_sign(char **num)
 	long long	abs_num;
 
 	size = ft_strlen_s(*num);
-	abs_num = ft_abs(atoll(*num));
+	abs_num = ft_abs(ft_atoll(*num));
 	ft_free_s((void **)num);
 	*num = ft_lltoa(abs_num);
 }

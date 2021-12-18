@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 23:47:30 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/06 00:50:27 by iyamada          ###   ########.fr       */
+/*   Created: 2021/12/18 18:24:58 by iyamada           #+#    #+#             */
+/*   Updated: 2021/12/18 18:25:57 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar_fd(char c, int fd)
+long long	ft_atoll(const char *str)
 {
-	write(fd, &c, sizeof(c));
+	return (ft_strtoll(str, (char **)NULL, 10));
 }
