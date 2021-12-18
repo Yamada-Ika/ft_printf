@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:24:58 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/18 18:25:57 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/18 19:50:45 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 long long	ft_atoll(const char *str)
 {
-	return (ft_strtoll(str, (char **)NULL, 10));
+	return (ft_strtoll(str, (char **) NULL, 10));
 }
