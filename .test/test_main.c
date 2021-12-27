@@ -1,7 +1,3 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <assert.h>
-#include "../bonus/ft_printf_bonus.h"
 #include "test.h"
 
 #define TEST(args...)							\
@@ -11,19 +7,6 @@
 	fflush(stdout);								\
 	ft_check_value(res_ft_printf, res_printf);	\
 }
-
-// #define TEST(args...)				\
-// {									\
-// 	int res_printf = printf(args);	\
-// 	printf("%d\n", res_printf);		\
-// }
-
-// #define TEST(args...)				\
-// {									\
-// 	int res_ft_printf = ft_printf(args);		\
-// 	printf("%d\n", res_ft_printf);		\
-// }
-
 
 int main(void) {
 	// non-conversion

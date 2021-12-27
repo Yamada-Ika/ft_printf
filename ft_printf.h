@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 14:05:54 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/18 02:33:45 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/27 13:57:51 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_BONUS_H
-# define FT_PRINTF_BONUS_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-# include <stdarg.h>
-# include "../libft/libft.h"
+# include "libft/libft.h"
 # include <stdbool.h>
-# include <stdio.h>
+# include <stdarg.h>
 
 # define ERROR_STATUS -1
 # define ERROR SIZE_T_MAX

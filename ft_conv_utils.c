@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_u.c                                      :+:      :+:    :+:   */
+/*   ft_conv_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:07:47 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/07 02:27:27 by iyamada          ###   ########.fr       */
+/*   Created: 2021/12/15 18:19:17 by iyamada           #+#    #+#             */
+/*   Updated: 2021/12/27 13:57:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_printf_u(va_list *ap, size_t write_len)
+void	ft_cut_off_str(char *str, t_flags *flags)
 {
-	char	*num;
+	size_t	i;
+	size_t	cut_off_len;
+	size_t	str_len;
 
-	num = ft_uitoa(va_arg(*ap, unsigned int));
-	if (num == NULL)
-		return (ERROR);
-	ft_putstr(num);
-	write_len += ft_strlen_s(num);
-	ft_free_s((void **)&num);
-	return (write_len);
+	str_len = ft_strlen_s(str);
+	if (!flags->is_dot)
+		return ;
+	if (flags->prec < str_len)
+	{
+		cut_off_len = str_len - flags->prec;
+		i = 0;
+		while (i < cut_off_len)
+		{
+			str[str_len - 1 - i] = '\0';
+			i++;
+		}
+	}
 }

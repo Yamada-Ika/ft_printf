@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 01:58:50 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/15 02:10:21 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/27 13:59:07 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <malloc/malloc.h>
-#include "../bonus/ft_printf_bonus.h"
+#include "../ft_printf.h"
 
 # define BRACK			"\033[30m"
 # define RED			"\033[31m"

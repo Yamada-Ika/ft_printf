@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_with_flags_bonus.c                        :+:      :+:    :+:   */
+/*   ft_print_with_flags.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:24:19 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/18 01:56:57 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/27 13:57:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "ft_printf.h"
 
 size_t	ft_print_with_fill(t_flags *flags, t_fills *fills, char *str)
 {

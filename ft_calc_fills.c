@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calc_fills_bonus.c                              :+:      :+:    :+:   */
+/*   ft_calc_fills.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 01:22:09 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/18 02:53:15 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/27 13:57:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "ft_printf.h"
 
 void	ft_calc_fill_helper(t_flags *flags, t_fills *fills, size_t str_len, \
 	size_t non_prefix_len)

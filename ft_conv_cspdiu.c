@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_conv_cspdiu_bonus.c                             :+:      :+:    :+:   */
+/*   ft_conv_cspdiu.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:11:37 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 15:16:04 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/27 13:57:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "ft_printf.h"
 
 size_t	ft_printf_c(va_list *ap, size_t write_len, t_flags *flags)
 {

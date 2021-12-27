@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_conv_upxlwxper_bonus.c                          :+:      :+:    :+:   */
+/*   ft_conv_upxlwxper.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:14:47 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/17 15:11:12 by iyamada          ###   ########.fr       */
+/*   Updated: 2021/12/27 13:57:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "ft_printf.h"
 
 size_t	ft_printf_upper_x(va_list *ap, size_t write_len, t_flags *flags)
 {

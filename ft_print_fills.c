@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_s.c                                      :+:      :+:    :+:   */
+/*   ft_print_fills.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 14:04:55 by iyamada           #+#    #+#             */
-/*   Updated: 2021/12/07 23:34:16 by iyamada          ###   ########.fr       */
+/*   Created: 2021/12/17 02:22:20 by iyamada           #+#    #+#             */
+/*   Updated: 2021/12/27 13:57:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_printf_s(va_list *ap, size_t write_len)
+size_t	ft_fill_c(char c, size_t fill_num)
 {
-	char	*str;
-	size_t	str_len;
+	size_t	write_fill_len;
 
-	str = va_arg(*ap, char *);
-	if (str == NULL)
+	write_fill_len = 0;
+	while (write_fill_len < fill_num)
 	{
-		ft_putstr("(null)");
-		write_len += ft_strlen_s("(null)");
-		return (write_len);
+		ft_putchar(c);
+		write_fill_len++;
 	}
-	str_len = ft_strlen_s(str);
-	if (write_len + str_len >= INT_MAX)
-		return (ERROR);
-	ft_putstr(str);
-	write_len += str_len;
-	return (write_len);
+	return (write_fill_len);
+}
+
+void	ft_put_prefix(t_flags *flags, char *str)
+{
+	if (str[0] == '0' && flags->conv != 'p')
+		return ;
+	if (flags->conv == 'p' || (flags->is_sharp && flags->conv == 'x'))
+		ft_putstr("0x");
+	if (flags->is_sharp && flags->conv == 'X')
+		ft_putstr("0X");
 }
