@@ -14,9 +14,12 @@ OBJS		:= $(SRCS:%.c=out/%.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT_A) $(OBJS) $(HEADER)
+$(NAME): dir $(LIBFT_A) $(OBJS) $(HEADER)
 	cp $(LIBFT_A) $(NAME)
 	ar rc $(NAME) $(OBJS)
+
+dir:
+	mkdir -p out
 
 $(LIBFT_A): empty
 	make -C $(LIBFT_DIR)
@@ -27,7 +30,7 @@ out/%.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $^
 
 clean:
-	rm -rf out/*.o
+	rm -rf out/*.o out
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean
@@ -36,4 +39,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re libft empty bonus
+.PHONY: all clean fclean re libft empty dir
