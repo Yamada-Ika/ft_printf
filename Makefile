@@ -12,14 +12,14 @@ HEADER		:= ft_printf.h
 SRCS		:= $(wildcard *.c)
 OBJS		:= $(SRCS:%.c=out/%.o)
 
-all: $(NAME)
-
-$(NAME): dir $(LIBFT_A) $(OBJS) $(HEADER)
-	cp $(LIBFT_A) $(NAME)
-	ar rc $(NAME) $(OBJS)
+all: dir $(NAME)
 
 dir:
 	mkdir -p out
+
+$(NAME): $(LIBFT_A) $(OBJS) $(HEADER)
+	cp $(LIBFT_A) $(NAME)
+	ar rc $(NAME) $(OBJS)
 
 $(LIBFT_A): empty
 	make -C $(LIBFT_DIR)
